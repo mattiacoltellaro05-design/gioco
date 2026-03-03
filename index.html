@@ -3,129 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bar Revenue Simulator</title>
+  <title>Bar Revenue Simulator ✓</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    :root {
-      --sunset-orange: #ff6b35;
-      --sunset-dark: #e55a30;
-      --sunset-light: #ff8e60;
-      --bg-gold: #fdf2e9;
-      --card-bg: #fff8f0;
-      --text-dark: #2c1b12;
-    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
-      background: linear-gradient(135deg, var(--bg-gold), #ffe8d6);
-      min-height: 100vh; 
-      color: var(--text-dark);
-      padding-bottom: 100px;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+      background: linear-gradient(135deg, #fdf2e9, #ffe8d6);
+      min-height: 100vh; padding: 10px; color: #2c1b12;
     }
+    .container { max-width: 1100px; margin: 0 auto; }
+    h1 { text-align: center; font-size: clamp(1.5em, 6vw, 2.8em); 
+         background: linear-gradient(45deg, #ff6b35, #ff8e60); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+         margin: 15px 0; }
     
-    .container { max-width: 1000px; margin: 0 auto; padding: 15px; }
-    h1 { 
-      text-align: center; font-size: clamp(1.8em, 5vw, 2.5em); 
-      background: linear-gradient(45deg, var(--sunset-orange), var(--sunset-light));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin: 20px 0 30px 0; 
-    }
-    
-    .status { padding: 12px; border-radius: 10px; margin: 0 0 20px 0; text-align: center; font-weight: bold; font-size: 1.1em; }
+    .status { padding: 12px; border-radius: 12px; margin: 0 0 20px 0; text-align: center; font-weight: bold; font-size: 1.1em; }
     .running { background: #d4edda; color: #155724; }
     .stopped { background: #f8d7da; color: #721c24; }
     
     .dashboard { display: grid; gap: 20px; }
-    @media (min-width: 769px) { .dashboard { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 700px) { .dashboard { grid-template-columns: 1fr 1fr; } }
     
-    .card { 
-      background: var(--card-bg); border-radius: 16px; padding: 20px; 
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
-    }
+    .card { background: #fff8f0; border-radius: 16px; padding: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .cocktail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 15px 0; }
+    .cocktail-item { background: white; border-radius: 12px; padding: 12px; text-align: center; box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
+    .cocktail-name { font-weight: bold; margin-bottom: 8px; font-size: 0.9em; }
+    .cocktail-btn { width: 100%; padding: 10px 6px; border: none; border-radius: 8px; background: #ff6b35; color: white; font-weight: bold; cursor: pointer; margin-bottom: 6px; }
+    .cocktail-btn:hover:not(:disabled) { background: #e55a30; }
+    .cocktail-btn:disabled { background: #ccc; cursor: not-allowed; }
+    .cocktail-btn.serving { background: #ff8e60 !important; animation: pulse 0.3s; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     
-    .cocktail-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-      gap: 12px; 
-      margin: 15px 0;
-    }
-    .cocktail-item {
-      background: white; border-radius: 12px; padding: 15px; text-align: center; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
-    }
-    .cocktail-name { font-weight: bold; margin-bottom: 8px; font-size: 0.95em; }
-    .cocktail-btn { 
-      width: 100%; padding: 12px 8px; border: none; border-radius: 8px; 
-      background: var(--sunset-orange); color: white; font-weight: bold; 
-      cursor: pointer; margin-bottom: 8px; font-size: 0.9em;
-    }
-    .cocktail-btn:hover:not(:disabled) { background: var(--sunset-dark); }
-    .cocktail-btn:disabled { background: #999; cursor: not-allowed; }
-    .cocktail-btn.serving { background: var(--sunset-light) !important; }
+    .price-row { display: flex; gap: 4px; align-items: center; justify-content: center; font-size: 0.85em; }
+    .price-display { font-weight: bold; color: #ff6b35; min-width: 40px; }
+    .price-input { width: 50px; padding: 3px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-size: 0.85em; }
     
-    .price-row { display: flex; gap: 5px; align-items: center; justify-content: center; font-size: 0.9em; }
-    .price-display { font-weight: bold; color: var(--sunset-orange); min-width: 45px; }
-    .price-input { width: 55px; padding: 4px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-size: 0.9em; }
-    
-    .stats-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
-      gap: 15px; 
-      margin: 15px 0;
-    }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 12px; margin: 15px 0; }
     .stat { text-align: center; }
-    .stat-label { font-size: 0.8em; opacity: 0.8; margin-bottom: 3px; }
-    .stat-value { font-size: clamp(1.8em, 8vw, 2.5em); font-weight: bold; color: var(--sunset-orange); }
+    .stat-label { font-size: 0.75em; opacity: 0.8; margin-bottom: 2px; }
+    .stat-value { font-size: clamp(1.4em, 6vw, 2.2em); font-weight: bold; color: #ff6b35; }
     
-    .controls { text-align: center; margin: 20px 0; padding: 20px; background: rgba(255,255,255,0.5); border-radius: 12px; }
-    .control-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; margin-bottom: 15px; }
-    button { 
-      padding: 12px 24px; border: none; border-radius: 25px; 
-      background: var(--sunset-orange); color: white; font-weight: bold; 
-      cursor: pointer; font-size: 1em; min-width: 120px;
-    }
-    button:hover:not(:disabled) { background: var(--sunset-dark); transform: translateY(-1px); }
+    .controls { text-align: center; padding: 20px; background: rgba(255,255,255,0.6); border-radius: 12px; margin-top: 20px; }
+    button { padding: 12px 20px; border: none; border-radius: 25px; background: #ff6b35; color: white; font-weight: bold; cursor: pointer; margin: 0 8px 8px 0; font-size: 0.95em; }
+    button:hover:not(:disabled) { background: #e55a30; }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
     
-    .rush-bar { height: 10px; background: #eee; border-radius: 5px; margin: 15px auto; width: 80%; overflow: hidden; }
-    .rush-progress { height: 100%; background: linear-gradient(90deg, #ff4757, var(--sunset-orange)); transition: width 0.8s; }
+    .rush-bar { height: 8px; background: #eee; border-radius: 4px; margin: 12px auto; width: 90%; overflow: hidden; }
+    .rush-progress { height: 100%; background: linear-gradient(90deg, #ff4757, #ff6b35); transition: width 1s ease; }
     
-    #revenueChart { height: 250px; width: 100%; margin-top: 15px; }
-    .suggestion { background: #fff3cd; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 4px solid var(--sunset-orange); font-size: 0.95em; }
-    .add-drink { 
-      background: rgba(255,255,255,0.8); border-radius: 10px; padding: 15px; margin-bottom: 15px;
-      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-    }
-    .add-drink input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; flex: 1; min-width: 80px; }
-    @media (max-width: 480px) { .add-drink input { font-size: 14px; } }
+    #revenueChart { height: 220px; width: 100%; margin-top: 10px; }
+    .suggestion { background: #fff3cd; padding: 12px; border-radius: 8px; margin: 12px 0; border-left: 4px solid #ff6b35; font-size: 0.9em; }
+    .add-drink { background: rgba(255,255,255,0.8); border-radius: 10px; padding: 12px; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .add-drink input { padding: 6px; border: 1px solid #ddd; border-radius: 5px; flex: 1; min-width: 70px; font-size: 14px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🍹 Bar Revenue Simulator</h1>
+    <h1>🍹 Bar Revenue</h1>
     
     <div class="status stopped" id="status">⏹️ Notte Fermata</div>
     
     <div class="dashboard">
-      <!-- MENU -->
       <div class="card">
-        <h3>🍸 Menu Cocktail</h3>
+        <h3 style="margin-bottom: 15px;">🍸 Menu</h3>
         <div class="add-drink">
-          <input id="newName" placeholder="Nome drink">
+          <input id="newName" placeholder="Drink">
           <input id="newCost" type="number" step="0.01" placeholder="Costo">
           <input id="newPrice" type="number" step="0.1" placeholder="Prezzo">
           <button onclick="addDrink()">➕</button>
         </div>
         <div class="cocktail-grid" id="cocktailGrid"></div>
-        <div class="rush-bar">
-          <div class="rush-progress" id="rushBar" style="width: 50%"></div>
-        </div>
-        <small style="text-align: center; display: block;">Rush Hour: più rosso = più clienti</small>
+        <div class="rush-bar"><div class="rush-progress" id="rushBar" style="width: 50%"></div></div>
+        <small>Rush Hour: più rosso = più clienti</small>
       </div>
       
-      <!-- STATS -->
       <div class="card">
-        <h3>📊 LIVE STATS</h3>
+        <h3 style="margin-bottom: 15px;">📊 LIVE</h3>
         <div class="stats-grid">
           <div class="stat">
             <div class="stat-label">RICAVO</div>
@@ -148,20 +101,15 @@
       </div>
     </div>
     
-    <!-- CONTROLLI -->
     <div class="card">
       <div class="controls">
-        <div class="control-row">
-          <label>👥 Clienti/ora: 
-            <input type="range" id="clientRange" min="20" max="200" value="80">
-            <span id="clientNum">80</span>
-          </label>
+        <div style="margin-bottom: 15px;">
+          👥 <input type="range" id="clientRange" min="20" max="200" value="80" style="width: 200px;"> 
+          <span id="clientNum">80</span>
         </div>
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-          <button onclick="startNight()" id="startBtn">🚀 AVVIA NOTTE</button>
-          <button onclick="endNight()" id="endBtn" disabled>⏹️ STOP</button>
-          <button onclick="resetAll()" style="background: #6c757d;">🔄 RESET</button>
-        </div>
+        <button onclick="startNight()" id="startBtn">🚀 AVVIA</button>
+        <button onclick="endNight()" id="endBtn" disabled>⏹️ STOP</button>
+        <button onclick="resetAll()" style="background: #6c757d;">🔄 RESET</button>
         <div id="suggestions"></div>
       </div>
     </div>
@@ -176,24 +124,17 @@
       { name: 'Margarita', cost: 2.00, basePrice: 12, stock: 18 }
     ];
     
-    let gameState = {
-      revenue: 0, sold: 0, profit: 0, nightTime: 180,
-      prices: {}, rushLevel: 50, isRunning: false
-    };
-    
+    let gameState = { revenue: 0, sold: 0, profit: 0, nightTime: 180, prices: {}, rushLevel: 50, isRunning: false };
     let chart, gameInterval;
     
     function init() {
       renderCocktails();
       setupChart();
       updateStats();
-      updateRush();
-      
-      document.getElementById('clientRange').addEventListener('input', function() {
-        document.getElementById('clientNum').textContent = this.value;
+      document.getElementById('clientRange').addEventListener('input', e => {
+        document.getElementById('clientNum').textContent = e.target.value;
       });
-      
-      setInterval(updateRush, 2000);
+      setInterval(updateRush, 1500);
     }
     
     function renderCocktails() {
@@ -223,49 +164,44 @@
       cocktails[i].stock--;
       const price = gameState.prices[i] || cocktails[i].basePrice;
       gameState.revenue += price;
-      gameState.profit += (price - cocktails[i].cost);
+      gameState.profit += price - cocktails[i].cost;
       gameState.sold++;
       
       setTimeout(() => {
-        btn.classList.remove('serving');
         btn.textContent = cocktails[i].stock > 0 ? '🍹 SERVI' : '❌ OUT';
-        renderCocktails();
-      }, 200);
+        btn.classList.remove('serving');
+      }, 300);
       
       updateStats();
+      renderCocktails();
     }
     
     function startNight() {
       gameState.isRunning = true;
-      document.getElementById('status').textContent = '▶️ Notte IN CORSO';
+      document.getElementById('status').textContent = '▶️ CORRENDO';
       document.getElementById('status').className = 'status running';
       document.getElementById('startBtn').disabled = true;
       document.getElementById('endBtn').disabled = false;
       
       gameInterval = setInterval(() => {
-        if (gameState.nightTime <= 0) {
-          endNight();
-          return;
-        }
+        if (gameState.nightTime <= 0) return endNight();
         
         gameState.nightTime--;
         const mins = Math.floor(gameState.nightTime / 60);
-        const secs = gameState.nightTime % 60;
-        document.getElementById('timeLeft').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        const secs = (gameState.nightTime % 60).toString().padStart(2, '0');
+        document.getElementById('timeLeft').textContent = `${mins}:${secs}`;
         
-        const clients = parseInt(document.getElementById('clientRange').value);
-        if (Math.random() < (clients / 100) * (gameState.rushLevel / 100)) {
-          sellRandomCocktail();
-        }
+        const chance = (parseInt(document.getElementById('clientRange').value) / 200) * (gameState.rushLevel / 100);
+        if (Math.random() < chance) sellRandomCocktail();
         
         updateStats();
-      }, 1000);
+      }, 800);
     }
     
     function endNight() {
       gameState.isRunning = false;
       clearInterval(gameInterval);
-      document.getElementById('status').textContent = '⏹️ Notte Fermata';
+      document.getElementById('status').textContent = '⏹️ Fermata';
       document.getElementById('status').className = 'status stopped';
       document.getElementById('startBtn').disabled = false;
       document.getElementById('endBtn').disabled = true;
@@ -283,7 +219,7 @@
     }
     
     function updateRush() {
-      gameState.rushLevel = Math.abs(Math.sin(Date.now() / 5000)) * 100;
+      gameState.rushLevel = Math.abs(Math.sin(Date.now() / 4000)) * 100;
       document.getElementById('rushBar').style.width = gameState.rushLevel + '%';
     }
     
@@ -291,10 +227,7 @@
       const ctx = document.getElementById('revenueChart').getContext('2d');
       chart = new Chart(ctx, {
         type: 'doughnut',
-        data: {
-          labels: ['Ricavo', 'Profitto'],
-          datasets: [{ data: [0, 0], backgroundColor: ['#ff6b35', '#ffd23f'] }]
-        },
+        data: { labels: ['Ricavo', 'Profitto'], datasets: [{ data: [0, 0], backgroundColor: ['#ff6b35', '#ffd23f'] }] },
         options: { responsive: true, maintainAspectRatio: false }
       });
     }
@@ -314,19 +247,11 @@
         return margin > best.margin ? {margin, name: c.name} : best;
       }, {margin: 0, name: ''});
       
-      document.getElementById('suggestions').innerHTML = `
-        <div class="suggestion">
-          🤖 ${best.name}: ${(best.margin*100).toFixed(0)}% margine
-        </div>
-      `;
+      document.getElementById('suggestions').innerHTML = `<div class="suggestion">🤖 ${best.name}: ${(best.margin*100).toFixed(0)}%</div>`;
     }
     
     function showReport() {
-      document.getElementById('suggestions').innerHTML += `
-        <div class="suggestion" style="background: #d4edda;">
-          📊 Ricavo: €${Math.floor(gameState.revenue)} | Profitto: €${Math.floor(gameState.profit)}
-        </div>
-      `;
+      document.getElementById('suggestions').innerHTML += `<div class="suggestion" style="background:#d4edda;">📊 €${Math.floor(gameState.revenue)} | Profitto €${Math.floor(gameState.profit)}</div>`;
     }
     
     function addDrink() {
@@ -335,10 +260,10 @@
       const price = parseFloat(document.getElementById('newPrice').value) || 8;
       if (name && price > cost * 2) {
         cocktails.push({name, cost, basePrice: price, stock: 30});
-        renderCocktails();
         document.getElementById('newName').value = '';
         document.getElementById('newCost').value = '';
         document.getElementById('newPrice').value = '';
+        renderCocktails();
       }
     }
     
