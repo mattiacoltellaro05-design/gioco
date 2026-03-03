@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bar Revenue Simulator</title>
+  <title>Bar Revenue Simulator Pro</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
@@ -22,15 +22,23 @@
       background: linear-gradient(135deg, var(--bg-gold), #ffe8d6);
       min-height: 100vh; 
       color: var(--text-dark);
+      overflow-x: hidden;
     }
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; }
     h1 { 
       text-align: center; font-size: 2.5em; 
       background: linear-gradient(45deg, var(--sunset-orange), var(--sunset-light));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       margin-bottom: 30px; text-shadow: var(--glow);
     }
-    .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    
+    /* Clienti animati */
+    .customers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .customer { position: absolute; font-size: 2em; animation: enterBar 3s forwards; }
+    @keyframes enterBar { 0% { transform: translateX(-100px) translateY(50px) rotate(-10deg); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateX(0) translateY(0) rotate(0); opacity: 0; } }
+    
+    .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; position: relative; z-index: 2; }
     @media (max-width: 768px) { .dashboard { grid-template-columns: 1fr; } }
     
     .card { 
@@ -39,21 +47,35 @@
     }
     .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--sunset-orange); }
     
-    .rush-bar { height: 10px; background: #ddd; border-radius: 5px; margin: 15px 0; overflow: hidden; }
-    .rush-progress { height: 100%; background: linear-gradient(90deg, #ff4757, var(--sunset-orange)); transition: width 0.3s; }
-    
-    .cocktail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 20px 0; }
-    .cocktail-btn { 
-      padding: 15px; border: none; border-radius: 12px; background: white; 
-      font-weight: bold; cursor: pointer; transition: all 0.2s; position: relative;
+    /* Cocktail più compatti */
+    .cocktail-section { background: rgba(255,255,255,0.8); border-radius: 15px; padding: 20px; margin: 15px 0; }
+    .cocktail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+    .cocktail-item {
+      background: white; border-radius: 12px; padding: 12px; text-align: center; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s;
+      position: relative; overflow: hidden;
     }
-    .cocktail-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255,107,53,0.3); }
-    .cocktail-btn.sold { animation: pulse 0.6s; background: var(--sunset-light); }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .cocktail-item:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(255,107,53,0.3); }
+    .cocktail-name { font-weight: bold; margin-bottom: 8px; font-size: 0.95em; }
+    .cocktail-btn { 
+      width: 100%; padding: 10px; border: none; border-radius: 8px; background: var(--sunset-orange); 
+      color: white; font-weight: bold; cursor: pointer; margin-bottom: 8px; transition: all 0.2s;
+    }
+    .cocktail-btn:hover:not(:disabled) { background: var(--sunset-dark); transform: scale(1.05); }
+    .cocktail-btn:disabled { background: #ccc; cursor: not-allowed; }
+    .cocktail-btn.sold { animation: pulse 0.6s; background: var(--sunset-light) !important; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    
+    .price-row { display: flex; gap: 5px; align-items: center; justify-content: center; }
+    .price-display { font-weight: bold; font-size: 1.1em; color: var(--sunset-orange); min-width: 45px; }
+    .price-input { width: 50px; padding: 4px; border: 2px solid #eee; border-radius: 6px; text-align: center; font-size: 0.9em; }
+    
+    .rush-bar { height: 12px; background: #ddd; border-radius: 6px; margin: 20px 0; overflow: hidden; }
+    .rush-progress { height: 100%; background: linear-gradient(90deg, #ff4757, var(--sunset-orange)); transition: width 0.5s ease; border-radius: 6px; }
     
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin: 20px 0; }
-    .stat { text-align: center; font-size: 1.3em; font-weight: bold; }
-    .stat-value { font-size: 2em; color: var(--sunset-orange); }
+    .stat { text-align: center; font-size: 1.1em; }
+    .stat-value { font-size: 2.2em; font-weight: bold; color: var(--sunset-orange); line-height: 1.2; }
     
     .controls { text-align: center; margin: 25px 0; }
     button { 
@@ -61,29 +83,45 @@
       background: var(--sunset-orange); color: white; font-size: 1.1em; 
       font-weight: bold; cursor: pointer; transition: all 0.3s; margin: 0 10px;
     }
-    button:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+    button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--glow); }
     button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     
-    #revenueChart { max-height: 300px; }
-    .price-input { width: 80px; padding: 8px; border: 2px solid #eee; border-radius: 8px; text-align: center; }
+    #revenueChart { max-height: 280px; margin-top: 15px; }
     .suggestion { background: #fff3cd; padding: 15px; border-radius: 10px; margin: 15px 0; border-left: 5px solid var(--sunset-orange); }
+    .add-drink { background: rgba(255,255,255,0.9); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+    .add-drink input { padding: 8px; border: 2px solid #eee; border-radius: 6px; margin-right: 10px; }
   </style>
 </head>
 <body>
+  <div class="customers" id="customers"></div>
+  
   <div class="container">
-    <h1>🍹 Bar Revenue Simulator</h1>
+    <h1>🍹 Bar Revenue Simulator Pro</h1>
     
     <div class="dashboard">
-      <!-- Controlli e Setup -->
+      <!-- Controlli e Cocktail -->
       <div class="card">
-        <h3>🎛️ Setup Prezzi</h3>
-        <div class="cocktail-grid" id="cocktailSetup"></div>
+        <h3>🎛️ Gestione Bar</h3>
+        
+        <!-- Aggiungi Drink -->
+        <div class="add-drink">
+          <input id="newName" placeholder="Nuovo drink" maxlength="15">
+          <input id="newCost" type="number" placeholder="Costo €" step="0.01" min="0.5">
+          <input id="newPrice" type="number" placeholder="Prezzo €" step="0.1" min="3">
+          <button onclick="addDrink()">➕ Aggiungi</button>
+        </div>
+        
+        <div class="cocktail-section">
+          <h4>Menu Cocktail</h4>
+          <div class="cocktail-grid" id="cocktailGrid"></div>
+        </div>
+        
         <div class="controls">
           <input type="range" id="clientRange" min="20" max="200" value="80" style="width: 200px;">
           <span id="clientNum">80</span> clienti/ora
           <br><br>
           <button onclick="startNight()">🚀 Avvia Notte</button>
-          <button onclick="endNight()" id="endBtn" disabled>⏹️ Chiudi Notte</button>
+          <button onclick="endNight()" id="endBtn" disabled>⏹️ Chiudi</button>
         </div>
         <div class="rush-bar"><div class="rush-progress" id="rushBar" style="width: 0%"></div></div>
       </div>
@@ -92,30 +130,42 @@
       <div class="card">
         <h3>📊 Stats Live</h3>
         <div class="stats-grid">
-          <div class="stat">💰 <span class="stat-value" id="revenue">€0</span></div>
-          <div class="stat">🍹 <span class="stat-value" id="sold">0</span></div>
-          <div class="stat">⭐ <span class="stat-value" id="profit">€0</span></div>
-          <div class="stat">⏱️ <span class="stat-value" id="timeLeft">--</span></div>
+          <div class="stat">
+            💰 Ricavo<br>
+            <span class="stat-value" id="revenue">€0</span>
+          </div>
+          <div class="stat">
+            🍹 Venduti<br>
+            <span class="stat-value" id="sold">0</span>
+          </div>
+          <div class="stat">
+            ⭐ Profitto<br>
+            <span class="stat-value" id="profit">€0</span>
+          </div>
+          <div class="stat">
+            ⏱️ Tempo<br>
+            <span class="stat-value" id="timeLeft">--</span>
+          </div>
         </div>
         <canvas id="revenueChart"></canvas>
       </div>
     </div>
     
-    <!-- Report e Suggerimenti -->
+    <!-- Report -->
     <div class="card">
-      <h3>📈 Report & AI Tips</h3>
+      <h3>🤖 AI Tips & Report</h3>
       <div id="suggestions"></div>
       <div style="margin-top: 20px;">
-        <button onclick="saveStrategy()">💾 Salva Strategia</button>
-        <button onclick="loadStrategy()">📂 Carica Strategia</button>
+        <button onclick="saveStrategy()">💾 Salva</button>
+        <button onclick="loadStrategy()">📂 Carica</button>
         <button onclick="resetAll()">🔄 Reset</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Dati cocktail reali (dal tuo bar inventory)
-    const cocktails = [
+    // Cocktails (modificabili)
+    let cocktails = JSON.parse(localStorage.getItem('barCocktails')) || [
       { name: 'Negroni', cost: 2.10, basePrice: 12, stock: 45 },
       { name: 'Aperol Spritz', cost: 1.80, basePrice: 10, stock: 32 },
       { name: 'Gin Tonic', cost: 1.50, basePrice: 9, stock: 28 },
@@ -123,73 +173,60 @@
       { name: 'Margarita', cost: 2.00, basePrice: 12, stock: 18 }
     ];
     
-    let gameState = {
-      revenue: 0, sold: 0, profit: 0, nightTime: 0,
-      prices: {}, rushLevel: 0, strategy: 'base'
+    let gameState = JSON.parse(localStorage.getItem('barGameState')) || {
+      revenue: 0, sold: 0, profit: 0, nightTime: 0, prices: {},
+      rushLevel: 0, isRunning: false
     };
     
-    let chart;
+    let chart, gameInterval;
     
-    // Inizializza
     function init() {
-      loadGameState();
       renderCocktails();
       updateClientNum();
-      chart = new Chart(document.getElementById('revenueChart'), {
-        type: 'doughnut',
-        data: { labels: ['Ricavo', 'Profitto'], datasets: [{ data: [0, 0], backgroundColor: ['#ff6b35', '#ffd23f'] }] },
-        options: { responsive: true, maintainAspectRatio: false }
-      });
-      setInterval(updateRush, 2000);
+      setupChart();
+      updateStats();
+      updateRush();
+      setInterval(updateRush, 1500);
     }
     
-    // Render cocktail buttons
     function renderCocktails() {
-      const grid = document.getElementById('cocktailSetup');
+      const grid = document.getElementById('cocktailGrid');
       grid.innerHTML = cocktails.map((c, i) => `
-        <div style="text-align: center;">
-          <div style="font-size: 0.9em; margin-bottom: 5px;">${c.name}</div>
-          <button class="cocktail-btn" onclick="sellCocktail(${i})" data-i="${i}">
-            €<span id="price-${i}">${gameState.prices[i] || c.basePrice}</span>
-            ${c.stock > 0 ? `(${c.stock})` : '[OUT]'}
+        <div class="cocktail-item">
+          <div class="cocktail-name">${c.name}</div>
+          <button class="cocktail-btn" onclick="sellCocktail(${i})" 
+                  ${c.stock <= 0 ? 'disabled' : ''}>
+            🍹 ${c.stock > 0 ? `€${(gameState.prices[i] || c.basePrice).toFixed(1)}` : 'OUT'}
           </button>
-          <input class="price-input" type="number" id="priceInput-${i}" value="${gameState.prices[i] || c.basePrice}" onchange="updatePrice(${i}, this.value)" min="5" max="25">
+          <div class="price-row">
+            <span class="price-display">€${(gameState.prices[i] || c.basePrice).toFixed(1)}</span>
+            <input class="price-input" type="number" value="${gameState.prices[i] || c.basePrice}" 
+                   onchange="updatePrice(${i}, this.value)" min="5" max="25" step="0.1">
+          </div>
         </div>
       `).join('');
     }
     
-    // Gameplay
-    function startNight() {
-      gameState.nightTime = 180; // 3 minuti
-      document.querySelector('button[onclick="startNight()"]').disabled = true;
-      document.getElementById('endBtn').disabled = false;
-      gameLoop();
-    }
-    
-    function endNight() {
-      clearInterval(gameState.interval);
-      showReport();
-      document.querySelector('button[onclick="startNight()"]').disabled = false;
-      document.getElementById('endBtn').disabled = true;
-    }
-    
-    function gameLoop() {
-      gameState.interval = setInterval(() => {
-        if (gameState.nightTime <= 0) return endNight();
-        gameState.nightTime--;
-        document.getElementById('timeLeft').textContent = `${Math.floor(gameState.nightTime/60)}:${(gameState.nightTime%60).toString().padStart(2,'0')}`;
-        
-        // Simula clienti
-        const clients = Math.floor(Math.random() * 40) + parseInt(document.getElementById('clientRange').value) * (1 + gameState.rushLevel/100);
-        for (let i = 0; i < clients; i++) {
-          if (Math.random() < 0.3) sellRandomCocktail(); // 30% auto-vendite
-        }
+    function addDrink() {
+      const name = document.getElementById('newName').value.trim();
+      const cost = parseFloat(document.getElementById('newCost').value) || 1.5;
+      const price = parseFloat(document.getElementById('newPrice').value) || 8;
+      
+      if (name && cost > 0 && price > 0) {
+        cocktails.push({ name, cost, basePrice: price, stock: 30 });
+        gameState.prices[cocktails.length - 1] = price;
+        localStorage.setItem('barCocktails', JSON.stringify(cocktails));
+        renderCocktails();
         updateStats();
-      }, 1000);
+        document.getElementById('newName').value = '';
+        document.getElementById('newCost').value = '';
+        document.getElementById('newPrice').value = '';
+      }
     }
     
     function sellCocktail(i) {
-      if (cocktails[i].stock <= 0 || gameState.nightTime <= 0) return;
+      if (cocktails[i].stock <= 0 || !gameState.isRunning) return;
+      
       const btn = event.target;
       btn.classList.add('sold');
       setTimeout(() => btn.classList.remove('sold'), 600);
@@ -199,19 +236,71 @@
       gameState.revenue += price;
       gameState.profit += price - cocktails[i].cost;
       gameState.sold++;
+      
+      // Animazione cliente
+      createCustomer();
+      
       renderCocktails();
+      updateStats();
+      saveGameState();
+      
       if (navigator.vibrate) navigator.vibrate(50);
     }
     
-    function sellRandomCocktail() {
-      const available = cocktails.filter((_, i) => cocktails[i].stock > 0);
-      if (available.length) sellCocktail(available[Math.floor(Math.random() * available.length)].index);
+    function createCustomer() {
+      const customer = document.createElement('div');
+      customer.className = 'customer';
+      customer.innerHTML = ['👨', '👩', '👨‍🦱', '👩‍🦰', '👴', '👵'][Math.floor(Math.random() * 6)];
+      customer.style.left = Math.random() * 100 + '%';
+      customer.style.top = '10%';
+      document.getElementById('customers').appendChild(customer);
+      
+      setTimeout(() => customer.remove(), 3000);
     }
     
-    // Utils
+    function startNight() {
+      gameState.isRunning = true;
+      gameState.nightTime = 180; // 3 minuti
+      document.querySelector('button[onclick="startNight()"]').disabled = true;
+      document.getElementById('endBtn').disabled = false;
+      gameLoop();
+    }
+    
+    function endNight() {
+      gameState.isRunning = false;
+      clearInterval(gameInterval);
+      showReport();
+      document.querySelector('button[onclick="startNight()"]').disabled = false;
+      document.getElementById('endBtn').disabled = true;
+    }
+    
+    function gameLoop() {
+      gameInterval = setInterval(() => {
+        if (gameState.nightTime <= 0) return endNight();
+        
+        gameState.nightTime--;
+        document.getElementById('timeLeft').textContent = `${Math.floor(gameState.nightTime/60)}:${(gameState.nightTime%60).toString().padStart(2,'0')}`;
+        
+        // Simula clienti automatici
+        const clients = Math.floor(Math.random() * 30) + parseInt(document.getElementById('clientRange').value);
+        for (let i = 0; i < clients; i++) {
+          if (Math.random() < 0.25) sellRandomCocktail();
+        }
+        
+        updateStats();
+      }, 1000);
+    }
+    
+    function sellRandomCocktail() {
+      const available = cocktails.map((c, i) => c.stock > 0 ? i : -1).filter(i => i >= 0);
+      if (available.length) sellCocktail(available[Math.floor(Math.random() * available.length)]);
+    }
+    
     function updatePrice(i, price) {
       gameState.prices[i] = parseFloat(price);
       renderCocktails();
+      updateStats();
+      saveGameState();
     }
     
     function updateClientNum() {
@@ -219,67 +308,89 @@
     }
     
     function updateRush() {
-      gameState.rushLevel = Math.sin(Date.now() / 10000) * 50 + 50;
+      gameState.rushLevel = (Math.sin(Date.now() / 8000) * 50 + 50);
       document.getElementById('rushBar').style.width = gameState.rushLevel + '%';
     }
     
+    function setupChart() {
+      const ctx = document.getElementById('revenueChart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: { 
+          labels: ['Ricavo', 'Profitto'], 
+          datasets: [{ data: [0, 0], backgroundColor: ['#ff6b35', '#ffd23f'] }] 
+        },
+        options: { 
+          responsive: true, 
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } }
+        }
+      });
+    }
+    
     function updateStats() {
-      document.getElementById('revenue').textContent = '€' + gameState.revenue.toFixed(0);
+      document.getElementById('revenue').textContent = '€' + Math.floor(gameState.revenue);
       document.getElementById('sold').textContent = gameState.sold;
-      document.getElementById('profit').textContent = '€' + gameState.profit.toFixed(0);
+      document.getElementById('profit').textContent = '€' + Math.floor(gameState.profit);
       
       chart.data.datasets[0].data = [gameState.revenue, gameState.profit];
-      chart.update();
+      chart.update('none');
       
       // AI Suggestion
-      const bestCocktail = cocktails.reduce((best, c, i) => 
-        (gameState.prices[i] || c.basePrice) / c.cost > best.margin ? {margin: (gameState.prices[i] || c.basePrice) / c.cost, i} : best, {margin: 0});
+      const best = cocktails.reduce((best, c, i) => {
+        const margin = ((gameState.prices[i] || c.basePrice) / c.cost);
+        return margin > best.margin ? {margin, i} : best;
+      }, {margin: 0, i: 0});
+      
       document.getElementById('suggestions').innerHTML = `
         <div class="suggestion">
-          🤖 <strong>Tip AI:</strong> Aumenta ${cocktails[bestCocktail.i].name} del 10% per +€${Math.round(gameState.revenue*0.1)}/notte!
-          <br><small>Margine attuale: ${(bestCocktail.margin*100).toFixed(0)}% ⭐</small>
+          🤖 <strong>AI Tip:</strong> ${cocktails[best.i].name} ha il miglior margine ${(best.margin*100).toFixed(0)}%! 
+          Aumenta del 10% per +€${Math.round(gameState.revenue*0.08)}/notte
         </div>
       `;
     }
     
     function showReport() {
-      const avgProfit = gameState.profit / (gameState.sold || 1);
+      const avgProfit = gameState.profit / Math.max(gameState.sold, 1);
       document.getElementById('suggestions').innerHTML += `
         <div class="suggestion">
-          <h4>📊 Report Notte Finito</h4>
-          <p><strong>Ricavo Totale:</strong> €${gameState.revenue.toFixed(0)}</p>
-          <p><strong>Profitto Netto:</strong> €${gameState.profit.toFixed(0)}</p>
-          <p><strong>Media/Drink:</strong> €${avgProfit.toFixed(2)}</p>
-          <p><strong>Break-even:</strong> ${gameState.sold > 25 ? '✅ OK' : '⚠️ Aumenta prezzi'}</p>
+          <h4>📊 Report Notte</h4>
+          <p><strong>Totale:</strong> €${Math.floor(gameState.revenue)}</p>
+          <p><strong>Profitto:</strong> €${Math.floor(gameState.profit)} (${((gameState.profit/gameState.revenue)*100 || 0).toFixed(0)}%)</p>
+          <p><strong>Media:</strong> €${avgProfit.toFixed(2)}/drink</p>
         </div>
       `;
     }
     
-    // Persistenza
-    function saveGameState() { localStorage.setItem('barRevenue', JSON.stringify(gameState)); }
-    function loadGameState() { 
-      const saved = localStorage.getItem('barRevenue');
-      if (saved) Object.assign(gameState, JSON.parse(saved)); 
+    // Save/Load
+    function saveGameState() {
+      localStorage.setItem('barGameState', JSON.stringify(gameState));
+      localStorage.setItem('barCocktails', JSON.stringify(cocktails));
     }
+    
     function saveStrategy() { 
       localStorage.setItem('barStrategy', JSON.stringify(gameState.prices)); 
-      alert('Strategia salvata! 📁'); 
+      alert('✅ Strategia salvata!'); 
     }
+    
     function loadStrategy() { 
       const saved = localStorage.getItem('barStrategy');
       if (saved) {
         Object.assign(gameState.prices, JSON.parse(saved));
         renderCocktails();
-        alert('Strategia caricata! 🚀');
+        alert('✅ Strategia caricata!');
       }
     }
+    
     function resetAll() { 
-      Object.assign(gameState, {revenue: 0, sold: 0, profit: 0, nightTime: 0, prices: {}, rushLevel: 0});
-      cocktails.forEach(c => c.stock = 45); 
-      renderCocktails(); updateStats(); 
+      Object.assign(gameState, {revenue: 0, sold: 0, profit: 0, nightTime: 0, prices: {}});
+      cocktails.forEach(c => c.stock = 30); 
+      renderCocktails(); 
+      updateStats(); 
+      localStorage.removeItem('barGameState');
     }
     
-    // Event listeners
+    // Events
     document.getElementById('clientRange').addEventListener('input', updateClientNum);
     window.addEventListener('beforeunload', saveGameState);
     
