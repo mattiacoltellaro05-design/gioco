@@ -3,387 +3,358 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GymApp Pastello 💪</title>
+    <title>GymApp - Palestra Personalizzata</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
-            background: linear-gradient(135deg, #fff8e1 0%, #fce4ec 50%, #e1bee7 100%); 
-            color: #4a4a4a; 
-            min-height: 100vh;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        h1 { text-align: center; background: rgba(255,248,225,0.9); border-radius: 24px; padding: 24px; margin-bottom: 30px; font-size: 2.5em; box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
-        nav { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 30px; }
-        button { 
-            background: linear-gradient(135deg, #ffcdd2, #f8bbd9); color: #880e4f; border: none; padding: 14px 24px; 
-            border-radius: 20px; font-weight: 500; cursor: pointer; transition: all 0.3s; 
-            box-shadow: 0 6px 20px rgba(255,205,210,0.4);
-        }
-        button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,205,210,0.6); }
-        button.active { background: linear-gradient(135deg, #e1bee7, #ce93d8); }
-        #muscle-map { width: 100%; max-width: 500px; height: 800px; margin: 20px auto; display: block; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-        .section { display: none; background: rgba(255,255,255,0.95); border-radius: 24px; padding: 30px; margin: 20px 0; box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
-        .section.active { display: block; }
-        .exercise { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 25px; background: linear-gradient(135deg, #fff3e0, #ffccbc); border-radius: 20px; transition: all 0.3s; }
-        .exercise:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,152,0,0.3); }
-        input { padding: 12px; border: 2px solid #f8bbd9; border-radius: 12px; margin: 5px; font-size: 16px; }
-        .delete-btn { background: linear-gradient(135deg, #ffcdd2, #ef9a9a) !important; color: #c62828 !important; }
-        .delete-btn:hover { background: linear-gradient(135deg, #ef9a9a, #e57373) !important; }
-        #workout-screen { display: none; text-align: center; background: linear-gradient(135deg, #e8f5e8, #c8e6c9); color: #2e7d32; padding: 50px; border-radius: 24px; margin: 20px 0; }
-        #timer { font-size: 6em; font-weight: bold; margin: 20px 0; color: #388e3c; }
-        .muscle-hover { stroke-width: 6 !important; stroke: #f48fb1 !important; fill-opacity: 0.6 !important; filter: drop-shadow(0 0 10px rgba(244,143,177,0.8)); }
-        .muscle-selected { fill-opacity: 0.8 !important; stroke-width: 6 !important; stroke: #ad1457 !important; }
-        .muscle-group { cursor: pointer; transition: all 0.3s; }
-        .muscle-group:hover { filter: brightness(1.2); }
-        h3 { color: #880e4f; margin-bottom: 15px; }
-        .workout-item { background: linear-gradient(135deg, #e1f5fe, #b3e5fc); padding: 15px; border-radius: 16px; margin: 10px 0; }
-        .exercise h4 { color: #d81b60; font-size: 1.3em; }
-        .exercise p { color: #666; line-height: 1.5; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%); }
+        .btn { @apply bg-gradient-to-r from-[#4f7cac] to-[#5a9bd4] text-white font-medium py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200; }
+        .muscle-hover { transition: all 0.3s; }
+        .muscle-hover:hover { fill: #4f7cac; opacity: 0.8; cursor: pointer; }
+        #timer { font-size: 4rem; font-weight: 600; color: #4f7cac; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>💪 GymApp Pastello</h1>
-        <nav>
-            <button class="active" onclick="showSection('home')">🏠 Home</button>
-            <button onclick="showSection('exercises')">Esercizi</button>
-            <button onclick="showSection('workouts')">Schede</button>
+<body class="min-h-screen p-4 md:p-8">
+    <div id="app" class="max-w-6xl mx-auto">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#4f7cac] to-[#5a9bd4] bg-clip-text text-transparent mb-4">GymApp</h1>
+            <p class="text-xl text-gray-600">Allenati smarter con schede personalizzate e tracking</p>
+        </header>
+
+        <!-- Navigazione tabs -->
+        <nav class="flex flex-wrap justify-center gap-4 mb-12">
+            <button onclick="showSection('body-map')" class="btn px-8">Mappa Muscoli</button>
+            <button onclick="showSection('esercizi')" class="btn px-8">Esercizi</button>
+            <button onclick="showSection('schede')" class="btn px-8">Schede</button>
+            <button onclick="showSection('allenamento')" class="btn px-8">Inizia Allenamento</button>
         </nav>
 
-        <!-- CORPO UMANO ESATTAMENTE COME L'IMMAGINE -->
-        <div id="home" class="section active">
-            <svg id="muscle-map" viewBox="0 0 400 850">
-                <!-- TESTA -->
-                <circle cx="200" cy="60" r="35" fill="#ffebee" stroke="#e57373" stroke-width="4" stroke-linecap="round"/>
-                <circle cx="185" cy="55" r="4" fill="#333"/>
-                <circle cx="215" cy="55" r="4" fill="#333"/>
-                <path d="M195 75 Q200 80 205 75" stroke="#333" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Sezione Mappa Muscoli -->
+        <section id="body-map" class="hidden md:block">
+            <h2 class="text-3xl font-semibold text-center mb-8 text-gray-800">Seleziona un Muscolo</h2>
+            <div class="flex flex-col md:flex-row gap-12 items-center justify-center">
+                <!-- SVG Body Map (fronte e retro) -->
+                <svg viewBox="0 0 400 800" class="w-48 h-96 muscle-hover" onclick="showEsercizi('petto')">
+                    <!-- Testa -->
+                    <circle cx="200" cy="80" r="40" fill="#f0f4f8" stroke="#d1d5db" stroke-width="3"/>
+                    <!-- Collo/Trapezi -->
+                    <path d="M170 120 Q200 140 230 120 L230 180 Q200 200 170 180 Z" fill="#f0f4f8" stroke="#d1d5db" stroke-width="3" class="muscle-hover" onclick="showEsercizi('petto')"/>
+                    <!-- Petto -->
+                    <path d="M150 180 Q140 240 150 300 Q170 320 200 300 Q230 320 250 300 Q260 240 250 180 Z" fill="#ffebee" stroke="#f48fb1" stroke-width="3" class="muscle-hover" data-muscle="petto"/>
+                    <!-- Addominali -->
+                    <rect x="170" y="300" width="60" height="100" rx="30" fill="#e8f5e8" stroke="#a5d6a7" stroke-width="3" class="muscle-hover" data-muscle="addominali"/>
+                    <!-- Braccia (bicipiti) -->
+                    <path d="M130 200 Q100 280 130 380 L150 360 Q170 380 190 360 Z" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="3" class="muscle-hover" data-muscle="braccia"/>
+                    <path d="M270 200 Q300 280 270 380 L250 360 Q230 380 210 360 Z" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="3" class="muscle-hover" data-muscle="braccia"/>
+                    <!-- Gambe (quads) -->
+                    <path d="M160 400 Q140 550 160 650 L190 630 Q210 650 230 630 Z" fill="#f3e5f5" stroke="#ce93d8" stroke-width="3" class="muscle-hover" data-muscle="gambe"/>
+                    <path d="M240 400 Q260 550 240 650 L210 630 Q190 650 170 630 Z" fill="#f3e5f5" stroke="#ce93d8" stroke-width="3" class="muscle-hover" data-muscle="gambe"/>
+                    <!-- Schiena (retro) sovrapposta semplificata -->
+                    <text x="200" y="500" text-anchor="middle" font-size="12" fill="#9e9e9e">Clicca muscoli</text>
+                </svg>
+                <svg viewBox="0 0 400 800" class="w-48 h-96 muscle-hover rotate-180" onclick="showEsercizi('schiena')">
+                    <!-- Simile ma per retro: dorsali, trapezio, ecc. -->
+                    <circle cx="200" cy="80" r="40" fill="#f0f4f8" stroke="#d1d5db" stroke-width="3"/>
+                    <path d="M150 180 Q120 300 150 450 Q200 480 250 450 Q280 300 250 180 Z" fill="#e8f5e8" stroke="#81c784" stroke-width="3" class="muscle-hover" data-muscle="schiena"/>
+                    <!-- Altri muscoli retro... -->
+                </svg>
+            </div>
+        </section>
 
-                <!-- COLLO -->
-                <path d="M190 95 L210 95 L205 120 L195 120 Z" fill="#fce4ec" stroke="#f48fb1" stroke-width="3"/>
+        <!-- Sezione Esercizi -->
+        <section id="esercizi" class="hidden">
+            <h2 id="esercizi-title" class="text-3xl font-semibold mb-8 text-gray-800">Tutti gli Esercizi</h2>
+            <div id="lista-esercizi" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div class="mt-8 flex gap-4">
+                <input id="new-esercizio-nome" placeholder="Nome esercizio" class="flex-1 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#4f7cac]">
+                <input id="new-esercizio-desc" placeholder="Descrizione" class="flex-1 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#4f7cac]">
+                <button onclick="addEsercizio()" class="btn">Aggiungi</button>
+            </div>
+        </section>
 
-                <!-- SPALLE E TRAPIZI -->
-                <path id="trapezi" class="muscle-group muscle" data-muscle="schiena" d="M170 120 Q155 140 165 170 Q175 185 200 180 Q225 185 235 170 Q245 140 230 120 L200 125 Z" fill="#ffccbc" stroke="#ff8a65" stroke-width="4" onclick="filterMuscle('schiena')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+        <!-- Sezione Schede -->
+        <section id="schede" class="hidden">
+            <h2 class="text-3xl font-semibold mb-8 text-gray-800">Crea Schede Personalizzate</h2>
+            <div id="schede-lista" class="mb-8"></div>
+            <div class="flex gap-4 mb-8">
+                <input id="scheda-nome" placeholder="Nome scheda (es. Full Body)" class="flex-1 p-3 rounded-xl border border-gray-300">
+                <button onclick="creaScheda()" class="btn">Crea Nuova</button>
+            </div>
+            <div id="scheda-builder" class="hidden">
+                <h3 id="current-scheda-nome" class="text-2xl mb-4"></h3>
+                <div id="esercizi-scheda" class="mb-4"></div>
+                <button onclick="salvaScheda()" class="btn mr-4">Salva Scheda</button>
+                <button onclick="startAllenamento()" class="btn bg-green-500 hover:bg-green-600">Inizia!</button>
+            </div>
+        </section>
 
-                <!-- PETTO - ESATTAMENTE COME IMMAGINE -->
-                <path id="petto-dx" class="muscle-group muscle" data-muscle="petto" d="M170 180 Q185 165 205 175 Q225 165 240 180 Q235 215 225 230 Q210 240 200 235 Q185 240 170 225 Z" fill="#ffcdd2" stroke="#f48fb1" stroke-width="5" stroke-linejoin="round" onclick="filterMuscle('petto')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-                <path id="petto-sx" class="muscle-group muscle" data-muscle="petto" d="M170 180 Q185 165 200 170 Q185 165 170 180 Q165 215 175 230 Q190 240 200 235" fill="#ffcdd2" stroke="#f48fb1" stroke-width="5" stroke-linejoin="round" onclick="filterMuscle('petto')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+        <!-- Sezione Allenamento -->
+        <section id="allenamento" class="hidden">
+            <h2 id="allenamento-title" class="text-3xl font-semibold mb-8 text-gray-800">Allenamento: <span id="current-esercizio"></span></h2>
+            <div class="text-center mb-12">
+                <div id="timer" class="mb-8">00:00</div>
+                <div class="text-2xl mb-4">Serie: <span id="serie">1</span>/ <span id="tot-serie">3</span> | Reps: <span id="reps">12</span></div>
+                <div class="flex gap-4 justify-center">
+                    <button onclick="startTimer()" class="btn bg-green-500 hover:bg-green-600 px-12 text-xl">Start</button>
+                    <button onclick="pauseTimer()" class="btn bg-yellow-500 hover:bg-yellow-600 px-12 text-xl">Pause</button>
+                    <button onclick="resetTimer()" class="btn bg-red-500 hover:bg-red-600 px-12 text-xl">Reset</button>
+                    <button onclick="nextSerie()" class="btn px-12 text-xl">Serie Fatta ✓</button>
+                </div>
+            </div>
+            <button onclick="endAllenamento()" class="btn w-full">Fine Allenamento</button>
+        </section>
 
-                <!-- DELTOIDI -->
-                <path id="spalle-dx" class="muscle-group muscle" data-muscle="spalle" d="M240 180 Q255 200 245 240 Q235 270 225 290 L225 330" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('spalle')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-                <path id="spalle-sx" class="muscle-group muscle" data-muscle="spalle" d="M160 180 Q145 200 155 240 Q165 270 175 290 L175 330" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('spalle')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-
-                <!-- BICIPITI DESTRO -->
-                <path id="bicipite-dx" class="muscle-group muscle" data-muscle="braccia" d="M225 290 Q240 320 235 350 Q230 370 225 385 L225 420" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('braccia')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-                <!-- TRICIPITE DESTRO -->
-                <path class="muscle-group muscle" data-muscle="braccia" d="M245 290 Q260 320 255 350 Q260 370 255 385 L255 420" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('braccia')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-
-                <!-- BICIPITI SINISTRO -->
-                <path id="bicipite-sx" class="muscle-group muscle" data-muscle="braccia" d="M175 290 Q160 320 165 350 Q170 370 175 385 L175 420" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('braccia')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-                <!-- TRICIPITE SINISTRO -->
-                <path class="muscle-group muscle" data-muscle="braccia" d="M155 290 Q140 320 145 350 Q140 370 145 385 L145 420" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('braccia')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-
-                <!-- SCHIENA LATERALE (DORSALI) -->
-                <path id="schiena-dx" class="muscle-group muscle" data-muscle="schiena" d="M240 180 Q255 250 245 320 Q240 360 235 400 L235 450" fill="#ffccbc" stroke="#ff8a65" stroke-width="4" onclick="filterMuscle('schiena')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-                <path id="schiena-sx" class="muscle-group muscle" data-muscle="schiena" d="M160 180 Q145 250 155 320 Q160 360 165 400 L165 450" fill="#ffccbc" stroke="#ff8a65" stroke-width="4" onclick="filterMuscle('schiena')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-
-                <!-- ADDOMINALI ESATTAMENTE COME IMMAGINE -->
-                <rect x="185" y="420" width="30" height="25" rx="5" fill="#fff3e0" stroke="#ff9800" stroke-width="3"/>
-                <rect x="185" y="450" width="25" height="20" rx="3" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
-                <rect x="190" y="475" width="20" height="15" rx="2" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
-
-                <!-- OBBLIQUI -->
-                <path id="obliqui-dx" class="muscle-group muscle" data-muscle="addominali" d="M240 420 Q255 450 250 480 Q245 510 240 535" fill="#fff8c1" stroke="#ff9800" stroke-width="3" onclick="filterMuscle('addominali')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-                <path id="obliqui-sx" class="muscle-group muscle" data-muscle="addominali" d="M160 420 Q145 450 150 480 Q155 510 160 535" fill="#fff8c1" stroke="#ff9800" stroke-width="3" onclick="filterMuscle('addominali')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-
-                <!-- QUADRICEPS DESTRO -->
-                <path id="quad-dx" class="muscle-group muscle" data-muscle="gambe" d="M220 535 Q235 570 230 610 Q225 650 220 690 L220 740" fill="#c8e6c9" stroke="#4caf50" stroke-width="5" onclick="filterMuscle('gambe')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-                <!-- FEMORALE DESTRO -->
-                <path class="muscle-group muscle" data-muscle="gambe" d="M240 535 Q255 570 250 610 Q255 650 250 690 L250 740" fill="#c8e6c9" stroke="#4caf50" stroke-width="5" onclick="filterMuscle('gambe')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-
-                <!-- QUADRICEPS SINISTRO -->
-                <path id="quad-sx" class="muscle-group muscle" data-muscle="gambe" d="M180 535 Q165 570 170 610 Q175 650 180 690 L180 740" fill="#c8e6c9" stroke="#4caf50" stroke-width="5" onclick="filterMuscle('gambe')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-                <!-- FEMORALE SINISTRO -->
-                <path class="muscle-group muscle" data-muscle="gambe" d="M160 535 Q145 570 150 610 Q145 650 150 690 L150 740" fill="#c8e6c9" stroke="#4caf50" stroke-width="5" onclick="filterMuscle('gambe')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
-
-                <!-- VITELLI -->
-                <ellipse cx="220" cy="760" rx="12" ry="20" fill="#a5d6a7" stroke="#43a047" stroke-width="3"/>
-                <ellipse cx="180" cy="760" rx="12" ry="20" fill="#a5d6a7" stroke="#43a047" stroke-width="3"/>
-
-                <!-- LABELS PRINCIPALI -->
-                <text x="200" y="260" fill="#ad1457" font-weight="bold" font-size="20" text-anchor="middle">PETTO</text>
-                <text x="200" y="370" fill="#ef6c00" font-weight="bold" font-size="20" text-anchor="middle">SCHIENA</text>
-                <text x="140" y="430" fill="#7b1fa2" font-weight="bold" font-size="18" text-anchor="end">BRACCIA</text>
-                <text x="260" y="430" fill="#7b1fa2" font-weight="bold" font-size="18" text-anchor="start">BRACCIA</text>
-                <text x="200" y="520" fill="#388e3c" font-weight="bold" font-size="20" text-anchor="middle">GAMBE</text>
-                <text x="140" y="650" fill="#ff9800" font-weight="bold" font-size="18" text-anchor="end">ADDOME</text>
-                <text x="260" y="650" fill="#ff9800" font-weight="bold" font-size="18" text-anchor="start">ADDOME</text>
-            </svg>
-        </div>
-
-        <div id="exercises" class="section">
-            <h2 id="ex-title">Esercizi <span id="current-muscle-name">Petto</span></h2>
-            <div id="exercise-list"></div>
-            <input id="new-name" placeholder="Nome nuovo esercizio">
-            <input id="new-desc" placeholder="Descrizione (es: 3x12 reps)">
-            <button onclick="addExercise()">➕ Aggiungi Esercizio</button>
-        </div>
-
-        <div id="workouts" class="section">
-            <h2>📋 Le Mie Schede</h2>
-            <div id="workout-list"></div>
-            <button onclick="createWorkout()">➕ Nuova Scheda</button>
-        </div>
-
-        <div id="workout-screen">
-            <h2 id="current-exercise">Preparati!</h2>
-            <div id="timer">01:00</div>
-            <div id="reps">12 reps</div>
-            <button onclick="toggleWorkout()" id="play-btn">▶️ Inizia</button>
-            <button onclick="nextExercise()">⏭️ Avanti</button>
-            <button onclick="stopWorkout()" class="delete-btn">⏹️ Stop</button>
-        </div>
     </div>
 
     <script>
-        // ESERCIZI SENZA IMMAGINI
-        let exercises = {
+        // Dati esercizi (scaricabili da esercizi.json se su server)
+        let esercizi = {
             petto: [
-                {name: 'Panca Piana con Bilanciere', desc: 'Sdraiati su panca, abbassa bilanciere al centro del petto, spingi esplosivo verso l\'alto. 3x8-12 reps'},
-                {name: 'Croci ai Cavi', desc: 'Posizionati al centro dei cavi, braccia flesse, tira verso il centro contraendo il petto. 3x12-15 reps'},
-                {name: 'Dips al Petto', desc: 'Sulle parallele con corpo inclinato in avanti, scendi controllato fino a 90°. 3x10-12 reps'},
-                {name: 'Panca Inclinata Manubri', desc: 'Panca a 30°, manubri sopra il petto superiore, contrazione massima. 3x10 reps'}
+                {name: 'Panca piana con bilanciere', desc: 'Esercizio composto per pettorali, tricipiti e deltoidi anteriori. Sdraiati su panca, impugna bilanciere e abbassa al petto spingendo su.'}[web:2],
+                {name: 'Panca inclinata con manubri', desc: 'Per parte alta pettorali. Sdraiati su panca inclinata, manubri in mano, abbassa e spingi su.'},
+                {name: 'Croci ai cavi', desc: 'Isolamento pettorali. Ai cavi incrociati, braccia tese avanti contraendo il petto.'}
             ],
             schiena: [
-                {name: 'Trazioni alla Sbarra Larga', desc: 'Presa larga, tira fino a mento sopra la sbarra, controlla la discesa. 4x6-10 reps'},
-                {name: 'Rematore con Bilanciere', desc: 'Busto inclinato 45°, tira bilanciere verso l\'addome contraendo dorsali. 3x10-12 reps'},
-                {name: 'Lat Machine Pronazione', desc: 'Presa larga, tira la barra al petto contraendo la schiena alta. 4x12 reps'},
-                {name: 'Pulley Basso', desc: 'Seduto, tira maniglia verso addome contraendo dorsali. 3x12-15 reps'}
-            ],
-            braccia: [
-                {name: 'Curl Bicipiti Manubri', desc: 'Curl controllato senza dondolio del corpo, supinazione completa. 3x12-15 reps'},
-                {name: 'French Press Manubrio', desc: 'Seduto o in piedi, abbassa manubrio dietro la nuca. 3x12 reps'},
-                {name: 'Pushdown Cavi Tricipiti', desc: 'Cavo alto, gomiti fermi, tira verso il basso contraendo. 3x15 reps'},
-                {name: 'Curl Concentrazione', desc: 'Seduto, gomito su coscia, curl lento e controllato. 3x12 reps'}
-            ],
-            gambe: [
-                {name: 'Squat con Bilanciere', desc: 'Piedi larghezza spalle, scendi fino al parallelo mantenendo schiena dritta. 4x8-10 reps'},
-                {name: 'Leg Press 45°', desc: 'Piedi centro piattaforma, ginocchia non bloccate, spinta controllata. 3x12-15 reps'},
-                {name: 'Affondi Camminati', desc: 'Manubri in mano, passo lungo mantenendo posizione eretta. 3x10 per gamba'},
-                {name: 'Calf Raise in Piedi', desc: 'Macchina o scalino, salita massima sui puntali. 4x15-20 reps'}
+                {name: 'Trazioni alla sbarra', desc: 'Per dorsali e bicipiti. Impugna sbarra larga, tira su fino al mento.'[web:2]},
+                {name: 'Rematore con bilanciere', desc: 'Per dorsali medi e trapezio. Chinati, tira bilanciere verso addome.'},
+                {name: 'Pulley basso', desc: 'Seduto, tira maniglia verso addome contraendo la schiena.'}
             ],
             spalle: [
-                {name: 'Military Press Manubri', desc: 'Seduto, manubri da spalle a sopra la testa. 3x8-10 reps'},
-                {name: 'Alzate Laterali Cavi', desc: 'Cavi bassi, braccia leggermente flesse, alzate ai lati. 3x12-15 reps'},
-                {name: 'Alzate Frontali', desc: 'Manubri, alzate davanti con braccia quasi dritte. 3x12 reps'}
+                {name: 'Military press', desc: 'Composto per deltoidi. Seduto o in piedi, spingi bilanciere sopra la testa.'[web:4]},
+                {name: 'Alzate laterali', desc: 'Per deltoidi laterali. Manubri ai lati, alza braccia parallele al suolo.'},
+                {name: 'Alzate frontali', desc: 'Per deltoidi anteriori. Manubri davanti, alza braccia in avanti.'}
+            ],
+            braccia: [
+                {name: 'Curl bicipiti con bilanciere', desc: 'Per bicipiti. In piedi, curla bilanciere verso spalle.'},
+                {name: 'French press', desc: 'Per tricipiti. Sopra la testa, abbassa manubrio dietro la nuca.'[web:4]},
+                {name: 'Pushdown tricipiti', desc: 'Ai cavi, spingi maniglia giù estendendo gomiti.'}
+            ],
+            gambe: [
+                {name: 'Squat', desc: 'Per quadricipiti, glutei e femorali. Bilanciere sulle spalle, scendi in accosciata.'[web:3]},
+                {name: 'Leg press', desc: 'Macchina per gambe. Spingi piattaforma via con piedi.'},
+                {name: 'Leg curl', desc: 'Per femorali. Sdraiato prono, curla talloni verso glutei.'}
             ],
             addominali: [
-                {name: 'Crunch su Panca', desc: 'Gambe sollevate, contrazione addominali verso l\'alto. 3x15-20 reps'},
-                {name: 'Plank', desc: 'Posizione piana, contrazione addome e glutei. 3x30-60 sec'},
-                {name: 'Leg Raise Appese', desc: 'Sbarra, gambe dritte verso l\'alto controllato. 3x12 reps'}
+                {name: 'Crunch', desc: 'Per addominali alti. Sdraiato, solleva spalle contraendo addome.'[web:8]},
+                {name: 'Plank', desc: 'Isometria per core. Avambracci a terra, corpo dritto.'},
+                {name: 'Leg raises', desc: 'Per addominali bassi. Appeso o sdraiato, alza gambe.'}
             ]
         };
 
-        let currentMuscle = 'petto', 
-            workouts = JSON.parse(localStorage.getItem('workouts')) || [], 
-            currentWorkout = null, 
-            timer = 60, 
-            timerId, 
-            paused = true, 
-            currentExIndex = 0;
+        let schede = JSON.parse(localStorage.getItem('schede')) || [];
+        let currentScheda = null;
+        let timerInterval;
+        let tempo = 0;
+        let reps = 12;
+        let serie = 1;
+        let totSerie = 3;
+        let currentEsercizioIndex = 0;
 
-        function init() {
-            document.getElementById('current-muscle-name').textContent = currentMuscle.toUpperCase();
-            renderExercises();
-            renderWorkouts();
-        }
-
+        // Mostra sezione
         function showSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
-            document.querySelectorAll('nav button').forEach((b, i) => 
-                b.classList.toggle('active', ['home','exercises','workouts'].indexOf(id) === i)
-            );
-            if (id === 'exercises') renderExercises();
-            if (id === 'workouts') renderWorkouts();
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            if (id === 'esercizi') renderEsercizi();
+            if (id === 'schede') renderSchede();
         }
 
-        function highlightMuscle(el) {
-            el.classList.add('muscle-hover');
+        // Event listeners per muscoli SVG
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-muscle]').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const muscle = e.target.dataset.muscle;
+                    showEsercizi(muscle);
+                });
+            });
+        });
+
+        // Mostra esercizi per muscolo
+        function showEsercizi(muscolo) {
+            document.getElementById('esercizi-title').textContent = `Esercizi per ${muscolo.charAt(0).toUpperCase() + muscolo.slice(1)}`;
+            esercizi[muscolo] = esercizi[muscolo] || [];
+            renderEsercizi();
+            showSection('esercizi');
         }
 
-        function unhighlightMuscle(el) {
-            if (!el.classList.contains('muscle-selected')) {
-                el.classList.remove('muscle-hover');
-            }
-        }
-
-        function filterMuscle(muscle) {
-            currentMuscle = muscle;
-            document.getElementById('current-muscle-name').textContent = muscle.toUpperCase();
-            
-            document.querySelectorAll('.muscle').forEach(el => el.classList.remove('muscle-selected'));
-            document.querySelectorAll(`[data-muscle="${muscle}"]`).forEach(el => el.classList.add('muscle-selected'));
-            showSection('exercises');
-        }
-
-        function renderExercises() {
-            const list = document.getElementById('exercise-list');
-            if (!exercises[currentMuscle]) {
-                list.innerHTML = '<p style="text-align:center; color:#888">Esercizi in arrivo...</p>';
-                return;
-            }
-            list.innerHTML = exercises[currentMuscle].map(e => `
-                <div class="exercise">
-                    <h4>💪 ${e.name}</h4>
-                    <p>${e.desc}</p>
-                    <button onclick="addToCurrentWorkout('${e.name}','${e.desc}', 12)">➕ Aggiungi a Scheda</button>
-                </div>
-            `).join('');
-        }
-
-        function renderWorkouts() {
-            const list = document.getElementById('workout-list');
-            if (workouts.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:#888">Nessuna scheda creata. Crea la prima!</p>';
-                return;
-            }
-            list.innerHTML = workouts.map((w, i) => `
-                <div class="workout-item">
-                    <h4>${w.name} (${w.exercises.length} esercizi)</h4>
-                    <div style="margin-top:10px">
-                        <button onclick="startWorkout(${i})">▶️ Avvia</button>
-                        <button onclick="editWorkout(${i})" style="margin-left:10px">✏️ Modifica</button>
-                        <button onclick="deleteWorkout(${i})" class="delete-btn">🗑️ Elimina</button>
+        // Render lista esercizi
+        function renderEsercizi() {
+            const lista = document.getElementById('lista-esercizi');
+            const currentMuscle = document.getElementById('esercizi-title').textContent.split(' ')[2]?.toLowerCase() || 'tutti';
+            const filtered = currentMuscle === 'tutti' ? Object.values(esercizi).flat() : esercizi[currentMuscle] || [];
+            lista.innerHTML = filtered.map(ex => `
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all">
+                    <h3 class="font-semibold text-xl mb-2">${ex.name}</h3>
+                    <p class="text-gray-600 mb-4">${ex.desc}</p>
+                    <div class="flex gap-2">
+                        <button onclick="addToScheda('${ex.name}')" class="px-4 py-2 bg-[#4f7cac]/20 text-[#4f7cac] rounded-xl hover:bg-[#4f7cac]/40">Aggiungi a Scheda</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function createWorkout() {
-            const name = prompt('Nome della nuova scheda:');
-            if (name && name.trim()) {
-                workouts.push({name: name.trim(), exercises: []});
-                saveWorkouts();
-                renderWorkouts();
+        // Aggiungi nuovo esercizio
+        function addEsercizio() {
+            const nome = document.getElementById('new-esercizio-nome').value;
+            const desc = document.getElementById('new-esercizio-desc').value;
+            if (!nome || !desc) return;
+            const muscle = document.getElementById('esercizi-title').textContent.split(' ')[2]?.toLowerCase() || 'altro';
+            if (!esercizi[muscle]) esercizi[muscle] = [];
+            esercizi[muscle].push({name: nome, desc: desc});
+            renderEsercizi();
+            document.getElementById('new-esercizio-nome').value = '';
+            document.getElementById('new-esercizio-desc').value = '';
+            saveData();
+        }
+
+        // Gestione Schede
+        function renderSchede() {
+            document.getElementById('schede-lista').innerHTML = schede.map((s, i) => `
+                <div class="bg-white p-6 rounded-2xl shadow-md mb-4">
+                    <h3 class="font-semibold text-xl">${s.nome}</h3>
+                    <p>${s.esercizi.length} esercizi</p>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="loadScheda(${i})" class="px-4 py-2 bg-blue-500 text-white rounded-xl text-sm">Modifica</button>
+                        <button onclick="deleteScheda(${i})" class="px-4 py-2 bg-red-500 text-white rounded-xl text-sm">Elimina</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function creaScheda() {
+            const nome = document.getElementById('scheda-nome').value;
+            if (!nome) return;
+            currentScheda = {nome, esercizi: []};
+            document.getElementById('current-scheda-nome').textContent = nome;
+            document.getElementById('scheda-builder').classList.remove('hidden');
+            document.getElementById('scheda-nome').value = '';
+            renderEserciziScheda();
+        }
+
+        function addToScheda(nome) {
+            if (!currentScheda) return alert('Crea prima una scheda!');
+            const ex = {name: nome, serie: 3, reps: 12};
+            if (!currentScheda.esercizi.some(e => e.name === nome)) {
+                currentScheda.esercizi.push(ex);
+                renderEserciziScheda();
             }
         }
 
-        function addToCurrentWorkout(name, desc, reps = 12) {
-            if (workouts.length === 0) {
-                alert('Crea prima una scheda!');
-                return;
-            }
-            const workoutName = prompt('Aggiungere a quale scheda?\n(Scrivi il nome esatto o "NUOVA")');
-            if (workoutName === 'NUOVA') {
-                createWorkout();
-                addToCurrentWorkout(name, desc, reps);
-                return;
-            }
-            
-            const workout = workouts.find(w => w.name.toLowerCase() === workoutName.toLowerCase());
-            if (workout) {
-                workout.exercises.push({name, desc, reps: parseInt(reps)});
-                saveWorkouts();
-                renderWorkouts();
-                alert('Esercizio aggiunto!');
+        function renderEserciziScheda() {
+            document.getElementById('esercizi-scheda').innerHTML = currentScheda.esercizi.map((ex, i) => `
+                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-xl mb-2">
+                    <span>${ex.name} (${ex.serie}x${ex.reps})</span>
+                    <button onclick="removeFromScheda(${i})" class="text-red-500">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function removeFromScheda(i) {
+            currentScheda.esercizi.splice(i, 1);
+            renderEserciziScheda();
+        }
+
+        function salvaScheda() {
+            if (schede.some(s => s.nome === currentScheda.nome)) {
+                const idx = schede.findIndex(s => s.nome === currentScheda.nome);
+                schede[idx] = currentScheda;
             } else {
-                alert('Scheda non trovata!');
+                schede.push(currentScheda);
             }
+            currentScheda = null;
+            document.getElementById('scheda-builder').classList.add('hidden');
+            renderSchede();
+            saveData();
         }
 
-        function editWorkout(index) {
-            const workout = workouts[index];
-            const newName = prompt('Nuovo nome scheda:', workout.name);
-            if (newName && newName.trim()) {
-                workout.name = newName.trim();
-                saveWorkouts();
-                renderWorkouts();
-            }
+        function loadScheda(i) {
+            currentScheda = {...schede[i]};
+            document.getElementById('current-scheda-nome').textContent = currentScheda.nome;
+            document.getElementById('scheda-builder').classList.remove('hidden');
+            renderEserciziScheda();
         }
 
-        function deleteWorkout(index) {
-            if (confirm(`Eliminare "${workouts[index].name}"?`)) {
-                workouts.splice(index, 1);
-                saveWorkouts();
-                renderWorkouts();
-            }
+        function deleteScheda(i) {
+            schede.splice(i, 1);
+            renderSchede();
+            saveData();
         }
 
-        function saveWorkouts() {
-            localStorage.setItem('workouts', JSON.stringify(workouts));
+        // Allenamento
+        function startAllenamento() {
+            if (!currentScheda || currentScheda.esercizi.length === 0) return alert('Crea e salva una scheda prima!');
+            showSection('allenamento');
+            nextEsercizio();
         }
 
-        function startWorkout(i) {
-            currentWorkout = workouts[i];
-            currentExIndex = 0;
-            document.getElementById('workout-screen').style.display = 'block';
-            document.querySelector('.container > nav').style.display = 'none';
-            nextExercise();
-        }
-
-        function nextExercise() {
-            if (!currentWorkout || currentExIndex >= currentWorkout.exercises.length) {
-                if (confirm('Workout completato! Iniziare da capo?')) {
-                    currentExIndex = 0;
-                    nextExercise();
-                } else {
-                    stopWorkout();
-                }
+        function nextEsercizio() {
+            if (currentEsercizioIndex >= currentScheda.esercizi.length) {
+                endAllenamento();
                 return;
             }
-            
-            const ex = currentWorkout.exercises[currentExIndex];
-            document.getElementById('current-exercise').textContent = ex.name;
-            document.getElementById('reps').textContent = `${ex.reps} reps`;
-            timer = 60;
-            paused = true;
-            document.getElementById('play-btn').textContent = '▶️ Inizia';
+            const ex = currentScheda.esercizi[currentEsercizioIndex];
+            document.getElementById('current-esercizio').textContent = ex.name;
+            serie = 1;
+            totSerie = ex.serie;
+            reps = ex.reps;
+            updateDisplay();
         }
 
-        function updateTimer() {
-            if (timerId) clearInterval(timerId);
-            timerId = setInterval(() => {
-                if (paused) return;
-                timer--;
-                const minutes = Math.floor(timer / 60);
-                const seconds = timer % 60;
-                document.getElementById('timer').textContent = 
-                    `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
-                
-                if (timer <= 0) {
-                    currentExIndex++;
-                    nextExercise();
-                }
+        function nextSerie() {
+            serie++;
+            if (serie > totSerie) {
+                currentEsercizioIndex++;
+                nextEsercizio();
+            } else {
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('serie').textContent = serie;
+            document.getElementById('tot-serie').textContent = totSerie;
+            document.getElementById('reps').textContent = reps;
+        }
+
+        // Timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                tempo++;
+                const mins = Math.floor(tempo / 60);
+                const secs = tempo % 60;
+                document.getElementById('timer').textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
             }, 1000);
         }
 
-        function toggleWorkout() {
-            paused = !paused;
-            document.getElementById('play-btn').textContent = paused ? '▶️ Inizia' : '⏸️ Pausa';
-            if (!paused) updateTimer();
+        function pauseTimer() {
+            clearInterval(timerInterval);
         }
 
-        function stopWorkout() {
-            if (timerId) clearInterval(timerId);
-            document.getElementById('workout-screen').style.display = 'none';
-            document.querySelector('.container > nav').style.display = 'flex';
-            showSection('workouts');
+        function resetTimer() {
+            clearInterval(timerInterval);
+            tempo = 0;
+            document.getElementById('timer').textContent = '00:00';
         }
 
-        function addExercise() {
-            const name = document.getElementById('new-name').value.trim();
-            const desc = document.getElementById('new-desc').value.trim();
-            if (name && desc) {
-                if (!exercises[currentMuscle]) exercises[currentMuscle] = [];
-                exercises[currentMuscle].push({name, desc});
-                document.getElementById('new-name').value = '';
-                document.getElementById('new-desc').value = '';
-                renderExercises();
-            }
+        function endAllenamento() {
+            showSection('schede');
+            alert('Allenamento completato! 💪');
+            currentEsercizioIndex = 0;
         }
 
-        init();
+        // Salva/Load dati locali
+        function saveData() {
+            localStorage.setItem('schede', JSON.stringify(schede));
+            localStorage.setItem('esercizi', JSON.stringify(esercizi));
+        }
+
+        // Load iniziale
+        if (localStorage.getItem('esercizi')) {
+            esercizi = JSON.parse(localStorage.getItem('esercizi'));
+        }
+        renderSchede();
+        showSection('body-map'); // Default
     </script>
 </body>
 </html>
