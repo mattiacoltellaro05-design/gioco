@@ -22,15 +22,23 @@
         }
         button:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,205,210,0.6); }
         button.active { background: linear-gradient(135deg, #e1bee7, #ce93d8); }
-        #muscle-map { width: 100%; max-width: 400px; height: 600px; margin: 20px auto; display: block; border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+        #muscle-map { width: 100%; max-width: 450px; height: 700px; margin: 20px auto; display: block; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
         .section { display: none; background: rgba(255,255,255,0.95); border-radius: 24px; padding: 30px; margin: 20px 0; box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
         .section.active { display: block; }
-        .exercise { display: flex; gap: 20px; margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #fff3e0, #ffccbc); border-radius: 16px; }
-        .exercise img { width: 140px; height: 140px; border-radius: 12px; object-fit: cover; background: #e3f2fd; }
-        input { padding: 12px; border: 1px solid #f8bbd9; border-radius: 12px; margin: 5px; }
+        .exercise { display: flex; gap: 20px; margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, #fff3e0, #ffccbc); border-radius: 20px; transition: all 0.3s; }
+        .exercise:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,152,0,0.3); }
+        .exercise img { width: 140px; height: 140px; border-radius: 16px; object-fit: cover; background: #e3f2fd; }
+        input { padding: 12px; border: 2px solid #f8bbd9; border-radius: 12px; margin: 5px; font-size: 16px; }
+        .delete-btn { background: linear-gradient(135deg, #ffcdd2, #ef9a9a) !important; color: #c62828 !important; }
+        .delete-btn:hover { background: linear-gradient(135deg, #ef9a9a, #e57373) !important; }
         #workout-screen { display: none; text-align: center; background: linear-gradient(135deg, #e8f5e8, #c8e6c9); color: #2e7d32; padding: 50px; border-radius: 24px; margin: 20px 0; }
-        #timer { font-size: 6em; font-weight: bold; margin: 20px 0; }
-        .muscle-hover { stroke-width: 5 !important; stroke: #f48fb1 !important; fill-opacity: 0.3 !important; }
+        #timer { font-size: 6em; font-weight: bold; margin: 20px 0; color: #388e3c; }
+        .muscle-hover { stroke-width: 6 !important; stroke: #f48fb1 !important; fill-opacity: 0.6 !important; filter: drop-shadow(0 0 10px rgba(244,143,177,0.8)); }
+        .muscle-selected { fill-opacity: 0.8 !important; stroke-width: 6 !important; stroke: #ad1457 !important; }
+        .muscle-group { cursor: pointer; transition: all 0.3s; }
+        .muscle-group:hover { filter: brightness(1.2); }
+        h3 { color: #880e4f; margin-bottom: 15px; }
+        .workout-item { background: linear-gradient(135deg, #e1f5fe, #b3e5fc); padding: 15px; border-radius: 16px; margin: 10px 0; }
     </style>
 </head>
 <body>
@@ -42,141 +50,247 @@
             <button onclick="showSection('workouts')">Schede</button>
         </nav>
 
-        <!-- SVG Corpo stile immagine allegata: silhouette blu muscoli rossi -->
+        <!-- CORPO UMANO MOLTO DETTAGLIATO -->
         <div id="home" class="section active">
-            <svg id="muscle-map" viewBox="0 0 300 650">
-                <!-- Silhouette corpo base (blu tenue) -->
-                <path d="M150 50 Q170 30 190 50 Q210 70 190 100 Q170 120 150 110 Q130 120 110 100 Q90 70 110 50 Z M110 110 L110 250 Q130 270 150 260 Q170 270 190 250 L190 110" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="4"/>
-                <path d="M90 250 Q70 300 90 380 Q110 420 150 410 L150 500 Q130 510 110 500 Q90 480 90 450 L90 380 Z" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="4"/>
-                <path d="M210 250 Q230 300 210 380 Q190 420 150 410 L150 500 Q170 510 190 500 Q210 480 210 450 L210 380 Z" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="4"/>
-                <ellipse cx="150" cy="530" rx="40" ry="60" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="4"/>
-
-                <!-- Muscoli selezionabili stile foto (rosso tenue) -->
-                <!-- Petto -->
-                <path id="petto" class="muscle" d="M115 150 Q135 130 165 145 Q195 130 215 150 L215 240 Q195 255 165 245 Q135 255 115 240 Z" fill="#ffcdd2" stroke="#f48fb1" stroke-width="3" stroke-opacity="0.8" onclick="filterMuscle('petto')" onmouseenter="this.classList.add('muscle-hover')" onmouseleave="this.classList.remove('muscle-hover')"/>
-                <!-- Gambe sinistra -->
-                <path id="gambe" class="muscle" d="M105 410 Q95 460 105 520 Q125 550 145 540 L145 610" fill="#ffcdd2" stroke="#f48fb1" stroke-width="3" onclick="filterMuscle('gambe')" onmouseenter="this.classList.add('muscle-hover')" onmouseleave="this.classList.remove('muscle-hover')"/>
-                <!-- Gambe destra -->
-                <path class="muscle" d="M195 410 Q205 460 195 520 Q175 550 155 540 L155 610" fill="#ffcdd2" stroke="#f48fb1" stroke-width="3" onclick="filterMuscle('gambe')" onmouseenter="this.classList.add('muscle-hover')" onmouseleave="this.classList.remove('muscle-hover')"/>
-                <!-- Braccia sinistra -->
-                <path id="braccia" class="muscle" d="M95 260 Q85 320 95 370 Q115 390 135 380 L135 420" fill="#e1bee7" stroke="#9575cd" stroke-width="3" onclick="filterMuscle('braccia')" onmouseenter="this.classList.add('muscle-hover')" onmouseleave="this.classList.remove('muscle-hover')"/>
-                <!-- Braccia destra -->
-                <path class="muscle" d="M205 260 Q215 320 205 370 Q185 390 165 380 L165 420" fill="#e1bee7" stroke="#9575cd" stroke-width="3" onclick="filterMuscle('braccia')" onmouseenter="this.classList.add('muscle-hover')" onmouseleave="this.classList.remove('muscle-hover')"/>
-                <!-- Schiena -->
-                <path id="schiena" class="muscle" d="M115 150 Q150 120 185 150 L185 240 Q150 260 115 240 Z" fill="#ffccbc" stroke="#ff8a65" stroke-width="3" opacity="0.9" onclick="filterMuscle('schiena')" onmouseenter="this.classList.add('muscle-hover')" onmouseleave="this.classList.remove('muscle-hover')"/>
-
-                <!-- Labels -->
-                <text x="150" y="195" fill="#880e4f" font-weight="bold" font-size="16" text-anchor="middle" opacity="0.8">Petto</text>
-                <text x="95" y="480" fill="#880e4f" font-weight="bold" font-size="14" text-anchor="middle">Gambe</text>
-                <text x="205" y="480" fill="#880e4f" font-weight="bold" font-size="14" text-anchor="middle">Gambe</text>
-                <text x="75" y="340" fill="#7b1fa2" font-weight="bold" font-size="14" text-anchor="end">Braccia</text>
-                <text x="225" y="340" fill="#7b1fa2" font-weight="bold" font-size="14" text-anchor="start">Braccia</text>
-                <text x="150" y="195" fill="#ef6c00" font-weight="bold" font-size="14" text-anchor="middle" opacity="0.8">Schiena</text>
+            <svg id="muscle-map" viewBox="0 0 350 750">
+                <!-- TESTA -->
+                <ellipse cx="175" cy="50" rx="35" ry="45" fill="#ffebee" stroke="#f48fb1" stroke-width="3"/>
+                <!-- COLLO -->
+                <rect x="165" y="90" width="20" height="25" rx="10" fill="#fce4ec" stroke="#f48fb1" stroke-width="2"/>
+                
+                <!-- SPALLE LARGHE -->
+                <path d="M140 115 Q120 140 135 180 Q150 200 175 195 Q200 200 215 180 Q230 140 210 115 L175 115 Z" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="4"/>
+                
+                <!-- PETTO SUPERIORE -->
+                <path id="petto-sup" class="muscle-group muscle" data-muscle="petto" d="M145 195 Q155 185 175 190 Q195 185 205 195 L205 240 Q195 250 175 245 Q155 250 145 240 Z" fill="#ffcdd2" stroke="#f48fb1" stroke-width="4" onclick="filterMuscle('petto')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                
+                <!-- PETTO INFERIORE -->
+                <path id="petto-inf" class="muscle-group muscle" data-muscle="petto" d="M150 240 Q165 235 175 240 Q185 235 200 240 L200 280 Q185 285 175 280 Q165 285 150 280 Z" fill="#ffcdd2" stroke="#f48fb1" stroke-width="4" onclick="filterMuscle('petto')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                
+                <!-- SCHIENA SUPERIORE -->
+                <path id="schiena-sup" class="muscle-group muscle" data-muscle="schiena" d="M145 195 Q160 180 175 185 Q190 180 205 195 L205 240 Q190 255 175 250 Q160 255 145 240 Z" fill="#ffccbc" stroke="#ff8a65" stroke-width="4" onclick="filterMuscle('schiena')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                
+                <!-- SCHIENA MEDIA -->
+                <path id="schiena-med" class="muscle-group muscle" data-muscle="schiena" d="M155 240 Q165 235 175 240 Q185 235 195 240 L195 340 Q185 345 175 340 Q165 345 155 340 Z" fill="#ffccbc" stroke="#ff8a65" stroke-width="4" onclick="filterMuscle('schiena')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                
+                <!-- BRACCIO DESTRO BICEPS -->
+                <path id="braccio-dx-biceps" class="muscle-group muscle" data-muscle="braccia" d="M230 200 Q245 240 235 280 Q225 310 215 330 L215 370" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('braccia')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                <!-- BRACCIO DESTRO TRicipite -->
+                <path class="muscle-group muscle" data-muscle="braccia" d="M215 200 Q225 240 230 280 Q235 310 240 330 L240 370" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('braccia')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                
+                <!-- BRACCIO SINISTRO BICEPS -->
+                <path id="braccio-sx-biceps" class="muscle-group muscle" data-muscle="braccia" d="M120 200 Q105 240 115 280 Q125 310 135 330 L135 370" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('braccia')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                <!-- BRACCIO SINISTRO TRicipite -->
+                <path class="muscle-group muscle" data-muscle="braccia" d="M135 200 Q125 240 120 280 Q115 310 110 330 L110 370" fill="#e1bee7" stroke="#9575cd" stroke-width="4" onclick="filterMuscle('braccia')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                
+                <!-- ADDOMINALE -->
+                <rect x="160" y="370" width="30" height="40" rx="15" fill="#fff3e0" stroke="#ff9800" stroke-width="3"/>
+                
+                <!-- GAMBE DESTRA QUADRICIPITE -->
+                <path id="gamba-dx-quad" class="muscle-group muscle" data-muscle="gambe" d="M195 410 Q210 460 200 510 Q190 550 180 580 L180 680" fill="#c8e6c9" stroke="#4caf50" stroke-width="4" onclick="filterMuscle('gambe')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                <!-- GAMBE DESTRA FEMORALE -->
+                <path class="muscle-group muscle" data-muscle="gambe" d="M210 410 Q225 460 215 510 Q220 550 210 580 L210 680" fill="#c8e6c9" stroke="#4caf50" stroke-width="4" onclick="filterMuscle('gambe')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                
+                <!-- GAMBE SINISTRA QUADRICIPITE -->
+                <path id="gamba-sx-quad" class="muscle-group muscle" data-muscle="gambe" d="M155 410 Q140 460 150 510 Q160 550 170 580 L170 680" fill="#c8e6c9" stroke="#4caf50" stroke-width="4" onclick="filterMuscle('gambe')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                <!-- GAMBE SINISTRA FEMORALE -->
+                <path class="muscle-group muscle" data-muscle="gambe" d="M140 410 Q125 460 135 510 Q130 550 140 580 L140 680" fill="#c8e6c9" stroke="#4caf50" stroke-width="4" onclick="filterMuscle('gambe')" onmouseenter="highlightMuscle(this)" onmouseleave="unhighlightMuscle(this)"/>
+                
+                <!-- Labels dettagliate -->
+                <text x="175" y="225" fill="#ad1457" font-weight="bold" font-size="18" text-anchor="middle">PETTO</text>
+                <text x="175" y="295" fill="#ef6c00" font-weight="bold" font-size="18" text-anchor="middle">SCHIENA</text>
+                <text x="105" y="325" fill="#7b1fa2" font-weight="bold" font-size="16" text-anchor="end">BRACCIA</text>
+                <text x="245" y="325" fill="#7b1fa2" font-weight="bold" font-size="16" text-anchor="start">BRACCIA</text>
+                <text x="105" y="600" fill="#388e3c" font-weight="bold" font-size="18" text-anchor="end">GAMBE</text>
+                <text x="245" y="600" fill="#388e3c" font-weight="bold" font-size="18" text-anchor="start">GAMBE</text>
             </svg>
         </div>
 
         <div id="exercises" class="section">
-            <h2 id="ex-title">Esercizi</h2>
+            <h2 id="ex-title">Esercizi <span id="current-muscle-name">Petto</span></h2>
             <div id="exercise-list"></div>
-            <input id="new-name" placeholder="Nuovo esercizio"><input id="new-desc" placeholder="Descrizione"><button onclick="addExercise()">Aggiungi</button>
+            <input id="new-name" placeholder="Nome nuovo esercizio">
+            <input id="new-desc" placeholder="Descrizione (es: 3x12 reps)">
+            <input id="new-img" placeholder="URL immagine (opzionale)">
+            <button onclick="addExercise()">➕ Aggiungi Esercizio</button>
         </div>
 
         <div id="workouts" class="section">
-            <h2>Schede</h2>
+            <h2>📋 Le Mie Schede</h2>
             <div id="workout-list"></div>
-            <button onclick="createWorkout()">Nuova Scheda</button>
+            <button onclick="createWorkout()">➕ Nuova Scheda</button>
         </div>
 
         <div id="workout-screen">
-            <h2 id="current-exercise">Inizia!</h2>
+            <h2 id="current-exercise">Preparati!</h2>
             <div id="timer">01:00</div>
             <div id="reps">12 reps</div>
-            <button onclick="toggleWorkout()">⏯️</button>
-            <button onclick="nextExercise()">Avanti</button>
-            <button onclick="stopWorkout()">Stop</button>
+            <button onclick="toggleWorkout()" id="play-btn">⏸️ Pausa</button>
+            <button onclick="nextExercise()">⏭️ Avanti</button>
+            <button onclick="stopWorkout()" class="delete-btn">⏹️ Stop</button>
         </div>
     </div>
 
     <script>
-        // ESERCIZI COMPLETI RIPRISTINATI
+        // ESERCIZI CON IMMAGINI REALI
         let exercises = {
             petto: [
-                {name: 'Panca Piana', desc: 'Sdraiati, abbassa bilanciere al petto, spingi. 3x8-12', img: 'https://via.placeholder.com/140/ffcdd2/fff?text=Panca+Piana'},
-                {name: 'Croci Cavi', desc: 'Tira cavi al centro contraendo petto. 3x12', img: 'https://via.placeholder.com/140/ff69b4/fff?text=Croci'},
-                {name: 'Dip', desc: 'Scendi parallele, spingi su. 3x10', img: 'https://via.placeholder.com/140/e91e63/fff?text=Dip'}
+                {name: 'Panca Piana con Bilanciere', desc: 'Sdraiati, abbassa bilanciere al centro del petto, spingi esplosivo. 3x8-12', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop'},
+                {name: 'Croci ai Cavi', desc: 'Posizionati al centro, tira i cavi contraendo il petto. 3x12-15', img: 'https://images.unsplash.com/photo-1600949689706-d1f17b9ae9e1?w=300&h=200&fit=crop'},
+                {name: 'Dips al Petto', desc: 'Scendi con corpo inclinato in avanti sui parallele. 3x10-12', img: 'https://images.unsplash.com/photo-1597250297437-b9bb24a917e1?w=300&h=200&fit=crop'}
             ],
             schiena: [
-                {name: 'Trazioni', desc: 'Sbarra larga, tira mento sopra. 4x6-8', img: 'https://via.placeholder.com/140/ffccbc/fff?text=Trazioni'},
-                {name: 'Rematore', desc: 'Bilanciere verso addome. 3x10', img: 'https://via.placeholder.com/140/ff8a65/fff?text=Rematore'},
-                {name: 'Lat Machine', desc: 'Tira barra al petto. 4x12', img: 'https://via.placeholder.com/140/ff5722/fff?text=Lat'}
+                {name: 'Trazioni alla Sbarra Larga', desc: 'Prendi larga presa, tira fino a mento sopra sbarra. 4x6-10', img: 'https://images.unsplash.com/photo-1614701366824-1931a62bd8ce?w=300&h=200&fit=crop'},
+                {name: 'Rematore con Bilanciere', desc: 'Bilanciere verso addome contraendo dorsali. 3x10-12', img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&h=200&fit=crop'},
+                {name: 'Lat Machine Pronazione', desc: 'Tira la barra al petto contraendo la schiena. 4x12', img: 'https://images.unsplash.com/photo-1581129724999-7a6bf24ffec9?w=300&h=200&fit=crop'}
             ],
             gambe: [
-                {name: 'Squat', desc: 'Piedi spalle, scendi profondo. 4x8', img: 'https://via.placeholder.com/140/e8f5e8/fff?text=Squat'},
-                {name: 'Leg Press', desc: 'Macchina, spingi piattaforma. 3x12', img: 'https://via.placeholder.com/140/4caf50/fff?text=LegPress'},
-                {name: 'Affondi', desc: 'Passo avanti, ginocchio basso. 3x10/gamba', img: 'https://via.placeholder.com/140/66bb6a/fff?text=Affondi'}
-            ],
-            spalle: [
-                {name: 'Military Press', desc: 'Manubri sopra testa. 3x8-10', img: 'https://via.placeholder.com/140/e1bee7/fff?text=Press'},
-                {name: 'Alzate Laterali', desc: 'Manubri ai lati. 3x12', img: 'https://via.placeholder.com/140/9575cd/fff?text=Laterali'}
+                {name: 'Squat con Bilanciere', desc: 'Piedi a larghezza spalle, scendi fino parallelo. 4x8-10', img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=300&h=200&fit=crop'},
+                {name: 'Leg Press 45°', desc: 'Piedi centro piattaforma, spingi controllato. 3x12-15', img: 'https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=300&h=200&fit=crop'},
+                {name: 'Affondi Camminati', desc: 'Manubri, passo lungo mantenendo posizione eretta. 3x10/gamba', img: 'https://images.unsplash.com/photo-1598366169331-6d7f6c1d2398?w=300&h=200&fit=crop'}
             ],
             braccia: [
-                {name: 'Curl Bicipiti', desc: 'Manubri curl controllato. 3x12', img: 'https://via.placeholder.com/140/e3f2fd/fff?text=Curl'},
-                {name: 'French Press', desc: 'Tricipiti sopra testa. 3x12', img: 'https://via.placeholder.com/140/2196f3/fff?text=French'}
+                {name: 'Curl Bicipiti Manubri', desc: 'Curl controllato senza dondolio. 3x12-15', img: 'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=300&h=200&fit=crop'},
+                {name: 'French Press Manubrio', desc: 'Sopra testa, abbassa dietro nuca. 3x12', img: 'https://images.unsplash.com/photo-1548595645-4e7f4225cbb5?w=300&h=200&fit=crop'},
+                {name: 'Pushdown Cavi Tricipiti', desc: 'Tira cavo verso basso contraendo tricipiti. 3x15', img: 'https://images.unsplash.com/photo-1581222325872-bab8d37265d7?w=300&h=200&fit=crop'}
             ]
         };
 
-        let currentMuscle = 'petto', workouts = JSON.parse(localStorage.getItem('workouts')) || [], 
-            currentWorkout = null, timer = 60, timerId, paused = false, currentExIndex = 0;
+        let currentMuscle = 'petto', 
+            workouts = JSON.parse(localStorage.getItem('workouts')) || [], 
+            currentWorkout = null, 
+            timer = 60, 
+            timerId, 
+            paused = false, 
+            currentExIndex = 0;
+
+        // Inizializzazione
+        function init() {
+            document.getElementById('current-muscle-name').textContent = currentMuscle.toUpperCase();
+            renderExercises();
+            renderWorkouts();
+        }
 
         function showSection(id) {
-            [...document.querySelectorAll('.section')].forEach(s => s.classList.toggle('active', s.id === id));
-            [...document.querySelectorAll('nav button')].forEach((b,i) => b.classList.toggle('active', ['home','exercises','workouts'].indexOf(id) === i));
+            document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
+            document.querySelectorAll('nav button').forEach((b, i) => 
+                b.classList.toggle('active', ['home','exercises','workouts'].indexOf(id) === i)
+            );
             if (id === 'exercises') renderExercises();
             if (id === 'workouts') renderWorkouts();
         }
 
-        function filterMuscle(m) {
-            currentMuscle = m; showSection('exercises');
+        function highlightMuscle(el) {
+            el.classList.add('muscle-hover');
+        }
+
+        function unhighlightMuscle(el) {
+            if (!el.classList.contains('muscle-selected')) {
+                el.classList.remove('muscle-hover');
+            }
+        }
+
+        function filterMuscle(muscle) {
+            currentMuscle = muscle;
+            document.getElementById('current-muscle-name').textContent = muscle.toUpperCase();
+            
+            // Rimuovi selezione precedente
+            document.querySelectorAll('.muscle').forEach(el => {
+                el.classList.remove('muscle-selected');
+            });
+            
+            // Seleziona tutti i muscoli del gruppo
+            document.querySelectorAll(`[data-muscle="${muscle}"]`).forEach(el => {
+                el.classList.add('muscle-selected');
+            });
+            
+            showSection('exercises');
         }
 
         function renderExercises() {
-            document.getElementById('ex-title').textContent = `Esercizi ${currentMuscle}`;
-            document.getElementById('exercise-list').innerHTML = exercises[currentMuscle].map(e => 
-                `<div class="exercise">
-                    <img src="${e.img}" alt="${e.name}">
-                    <div>
+            const list = document.getElementById('exercise-list');
+            list.innerHTML = exercises[currentMuscle].map(e => `
+                <div class="exercise">
+                    <img src="${e.img}" alt="${e.name}" onerror="this.src='https://via.placeholder.com/140/ffcdd2/fff?text=${e.name.split(' ')[0]}'">
+                    <div style="flex:1">
                         <h4>${e.name}</h4>
                         <p>${e.desc}</p>
-                        <button onclick="addToCurrentWorkout('${e.name}','${e.desc}','${e.img}')">➕ Scheda</button>
+                        <button onclick="addToCurrentWorkout('${e.name}','${e.desc}','${e.img}', 12)">➕ Aggiungi a Scheda</button>
                     </div>
-                </div>`
-            ).join('');
+                </div>
+            `).join('');
         }
 
         function renderWorkouts() {
-            document.getElementById('workout-list').innerHTML = workouts.map((w,i) => 
-                `<div class="exercise">
+            const list = document.getElementById('workout-list');
+            if (workouts.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#888">Nessuna scheda creata. Crea la prima!</p>';
+                return;
+            }
+            list.innerHTML = workouts.map((w, i) => `
+                <div class="workout-item">
                     <h4>${w.name} (${w.exercises.length} esercizi)</h4>
-                    <button onclick="startWorkout(${i})">▶️ Avvia</button>
-                </div>`
-            ).join('');
+                    <div style="margin-top:10px">
+                        <button onclick="startWorkout(${i})">▶️ Avvia</button>
+                        <button onclick="editWorkout(${i})" style="margin-left:10px">✏️ Modifica</button>
+                        <button onclick="deleteWorkout(${i})" class="delete-btn">🗑️ Elimina</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function createWorkout() {
-            const name = prompt('Nome scheda:');
-            if (name) {
-                workouts.push({name, exercises: []});
-                localStorage.setItem('workouts', JSON.stringify(workouts));
+            const name = prompt('Nome della nuova scheda:');
+            if (name && name.trim()) {
+                workouts.push({name: name.trim(), exercises: []});
+                saveWorkouts();
                 renderWorkouts();
             }
         }
 
-        function addToCurrentWorkout(name,desc,img) {
-            if (!workouts.length) return alert('Crea prima una scheda!');
-            const last = workouts[workouts.length-1];
-            last.exercises.push({name,desc,img,reps:12});
+        function addToCurrentWorkout(name, desc, img, reps = 12) {
+            if (workouts.length === 0) {
+                alert('Crea prima una scheda!');
+                return;
+            }
+            const workoutName = prompt('Aggiungere a quale scheda?\n(Scrivi il nome esatto o "NUOVA")');
+            if (workoutName === 'NUOVA') {
+                createWorkout();
+                addToCurrentWorkout(name, desc, img, reps);
+                return;
+            }
+            
+            const workout = workouts.find(w => w.name.toLowerCase() === workoutName.toLowerCase());
+            if (workout) {
+                workout.exercises.push({name, desc, img, reps: parseInt(reps)});
+                saveWorkouts();
+                renderWorkouts();
+                alert('Esercizio aggiunto!');
+            } else {
+                alert('Scheda non trovata!');
+            }
+        }
+
+        function editWorkout(index) {
+            const workout = workouts[index];
+            const newName = prompt('Nuovo nome scheda:', workout.name);
+            if (newName && newName.trim()) {
+                workout.name = newName.trim();
+                saveWorkouts();
+                renderWorkouts();
+            }
+        }
+
+        function deleteWorkout(index) {
+            if (confirm(`Eliminare "${workouts[index].name}"?`)) {
+                workouts.splice(index, 1);
+                saveWorkouts();
+                renderWorkouts();
+            }
+        }
+
+        function saveWorkouts() {
             localStorage.setItem('workouts', JSON.stringify(workouts));
-            renderWorkouts();
         }
 
         function startWorkout(i) {
@@ -185,22 +299,37 @@
             document.getElementById('workout-screen').style.display = 'block';
             document.querySelector('.container > nav').style.display = 'none';
             nextExercise();
-            updateTimer();
         }
 
         function nextExercise() {
-            if (!currentWorkout || currentExIndex >= currentWorkout.exercises.length) return stopWorkout();
+            if (!currentWorkout || currentExIndex >= currentWorkout.exercises.length) {
+                if (confirm('Workout completato! Iniziare da capo?')) {
+                    currentExIndex = 0;
+                    nextExercise();
+                } else {
+                    stopWorkout();
+                }
+                return;
+            }
+            
             const ex = currentWorkout.exercises[currentExIndex];
             document.getElementById('current-exercise').textContent = ex.name;
-            document.getElementById('reps').textContent = `${ex.reps || 12} reps`;
+            document.getElementById('reps').textContent = `${ex.reps} reps`;
             timer = 60;
+            paused = true; // Pausa iniziale
+            document.getElementById('play-btn').textContent = '▶️ Inizia';
         }
 
         function updateTimer() {
+            if (timerId) clearInterval(timerId);
             timerId = setInterval(() => {
                 if (paused) return;
                 timer--;
-                document.getElementById('timer').textContent = `00:${timer.toString().padStart(2,'0')}`;
+                const minutes = Math.floor(timer / 60);
+                const seconds = timer % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+                
                 if (timer <= 0) {
                     currentExIndex++;
                     nextExercise();
@@ -210,18 +339,34 @@
 
         function toggleWorkout() {
             paused = !paused;
+            document.getElementById('play-btn').textContent = paused ? '▶️ Inizia' : '⏸️ Pausa';
+            if (!paused) updateTimer();
         }
 
         function stopWorkout() {
-            clearInterval(timerId);
+            if (timerId) clearInterval(timerId);
             document.getElementById('workout-screen').style.display = 'none';
             document.querySelector('.container > nav').style.display = 'flex';
-            showSection('home');
+            showSection('workouts');
         }
 
-        // Init
-        renderExercises();
-        renderWorkouts();
+        function addExercise() {
+            const name = document.getElementById('new-name').value.trim();
+            const desc = document.getElementById('new-desc').value.trim();
+            const img = document.getElementById('new-img').value.trim() || 
+                       `https://via.placeholder.com/140/ffcdd2/fff?text=${name.split(' ')[0]}`;
+            
+            if (name && desc) {
+                exercises[currentMuscle].push({name, desc, img});
+                document.getElementById('new-name').value = '';
+                document.getElementById('new-desc').value = '';
+                document.getElementById('new-img').value = '';
+                renderExercises();
+            }
+        }
+
+        // Avvio app
+        init();
     </script>
 </body>
 </html>
