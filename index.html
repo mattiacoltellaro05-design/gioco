@@ -1,360 +1,946 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GymApp - Palestra Personalizzata</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%); }
-        .btn { @apply bg-gradient-to-r from-[#4f7cac] to-[#5a9bd4] text-white font-medium py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200; }
-        .muscle-hover { transition: all 0.3s; }
-        .muscle-hover:hover { fill: #4f7cac; opacity: 0.8; cursor: pointer; }
-        #timer { font-size: 4rem; font-weight: 600; color: #4f7cac; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prenotazioni Tavoli</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --color-bg: #f7f6f2;
+      --color-surface: #f9f8f5;
+      --color-surface-2: #fbfbf9;
+      --color-surface-offset: #f3f0ec;
+      --color-surface-dynamic: #e6e4df;
+      --color-border: #d4d1ca;
+      --color-divider: #dcd9d5;
+      --color-text: #28251d;
+      --color-text-muted: #7a7974;
+      --color-text-faint: #bab9b4;
+      --color-text-inverse: #f9f8f4;
+      --color-primary: #01696f;
+      --color-primary-hover: #0c4e54;
+      --color-primary-highlight: #cedcd8;
+      --color-success: #437a22;
+      --color-success-highlight: #d4dfcc;
+      --color-warning: #964219;
+      --color-error: #a12c7b;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(40, 37, 29, 0.06);
+      --shadow-md: 0 8px 24px rgba(40, 37, 29, 0.08);
+      --shadow-lg: 0 18px 40px rgba(40, 37, 29, 0.12);
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --font-body: 'Satoshi', 'Inter', sans-serif;
+      --sidebar-w: 300px;
+      --header-h: 76px;
+    }
+
+    [data-theme="dark"] {
+      --color-bg: #171614;
+      --color-surface: #1c1b19;
+      --color-surface-2: #201f1d;
+      --color-surface-offset: #1d1c1a;
+      --color-surface-dynamic: #2d2c2a;
+      --color-border: #393836;
+      --color-divider: #262523;
+      --color-text: #cdccca;
+      --color-text-muted: #9a9997;
+      --color-text-faint: #6a6967;
+      --color-text-inverse: #171614;
+      --color-primary: #4f98a3;
+      --color-primary-hover: #227f8b;
+      --color-primary-highlight: #313b3b;
+      --color-success: #6daa45;
+      --color-success-highlight: #3a4435;
+      --color-warning: #bb653b;
+      --color-error: #d163a7;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.42);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --color-bg: #171614;
+        --color-surface: #1c1b19;
+        --color-surface-2: #201f1d;
+        --color-surface-offset: #1d1c1a;
+        --color-surface-dynamic: #2d2c2a;
+        --color-border: #393836;
+        --color-divider: #262523;
+        --color-text: #cdccca;
+        --color-text-muted: #9a9997;
+        --color-text-faint: #6a6967;
+        --color-text-inverse: #171614;
+        --color-primary: #4f98a3;
+        --color-primary-hover: #227f8b;
+        --color-primary-highlight: #313b3b;
+        --color-success: #6daa45;
+        --color-success-highlight: #3a4435;
+        --color-warning: #bb653b;
+        --color-error: #d163a7;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--color-text);
+      background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-primary) 9%, transparent), transparent 28%), var(--color-bg);
+      line-height: 1.5;
+    }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      padding: 0.9rem 1rem;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 18%, transparent);
+    }
+    .app-shell {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: color-mix(in srgb, var(--color-surface) 82%, transparent);
+      border-right: 1px solid var(--color-divider);
+      padding: var(--space-6);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      backdrop-filter: blur(18px);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-8);
+    }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--color-primary), color-mix(in srgb, var(--color-primary) 65%, var(--color-surface-offset)));
+      color: var(--color-text-inverse);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-md);
+    }
+    .brand-copy strong {
+      display: block;
+      font-size: var(--text-sm);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .brand-copy span {
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+    }
+    .sidebar-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: var(--space-5);
+    }
+    .sidebar-card h2 {
+      font-size: var(--text-sm);
+      margin: 0 0 var(--space-4);
+    }
+    .stats {
+      display: grid;
+      gap: var(--space-3);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .stat {
+      background: var(--color-surface-2);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+    }
+    .stat span {
+      display: block;
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .stat strong {
+      font-size: var(--text-lg);
+      font-variant-numeric: tabular-nums;
+    }
+    .main-view {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-6);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: color-mix(in srgb, var(--color-bg) 86%, transparent);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .topbar h1 {
+      margin: 0;
+      font-size: var(--text-xl);
+      line-height: 1.1;
+    }
+    .topbar p {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--text-sm);
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .btn {
+      min-height: 44px;
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+      padding: 0.8rem 1.15rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      transition: transform var(--transition), background var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-secondary {
+      background: var(--color-surface);
+      border-color: var(--color-border);
+      color: var(--color-text);
+    }
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--color-border);
+      color: var(--color-text-muted);
+    }
+    .workspace {
+      padding: var(--space-6);
+      display: grid;
+      gap: var(--space-6);
+      grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
+      align-items: start;
+    }
+    .panel {
+      background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+      border: 1px solid var(--color-border);
+      border-radius: 28px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+    }
+    .panel-head {
+      padding: var(--space-5) var(--space-5) var(--space-4);
+      border-bottom: 1px solid var(--color-divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .panel-head h2 {
+      margin: 0;
+      font-size: var(--text-lg);
+    }
+    .panel-head p {
+      margin: 0.35rem 0 0;
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+    }
+    .board-toolbar {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .board {
+      position: relative;
+      min-height: 680px;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--color-border) 22%, transparent) 1px, transparent 1px),
+        linear-gradient(color-mix(in srgb, var(--color-border) 22%, transparent) 1px, transparent 1px),
+        linear-gradient(180deg, color-mix(in srgb, var(--color-surface-2) 60%, transparent), color-mix(in srgb, var(--color-surface-offset) 70%, transparent));
+      background-size: 40px 40px, 40px 40px, 100% 100%;
+      border-radius: 0 0 28px 28px;
+      overflow: auto;
+      padding: var(--space-5);
+      touch-action: none;
+    }
+    .board-inner {
+      position: relative;
+      min-height: 1100px;
+      min-width: 100%;
+    }
+    .table-card {
+      position: absolute;
+      width: 130px;
+      min-height: 108px;
+      border-radius: 26px;
+      border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+      background: color-mix(in srgb, var(--color-surface-2) 94%, transparent);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--space-3);
+      user-select: none;
+      cursor: grab;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+    }
+    .table-card.round { border-radius: 999px; }
+    .table-card.selected {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 18%, transparent), var(--shadow-lg);
+    }
+    .table-card.booked {
+      background: color-mix(in srgb, var(--color-success-highlight) 72%, var(--color-surface-2));
+      border-color: color-mix(in srgb, var(--color-success) 35%, var(--color-border));
+    }
+    .table-card.booked .status-pill {
+      background: color-mix(in srgb, var(--color-success) 15%, transparent);
+      color: var(--color-success);
+    }
+    .table-card.dragging {
+      cursor: grabbing;
+      transform: scale(1.02) rotate(1deg);
+      box-shadow: var(--shadow-lg);
+      z-index: 999;
+    }
+    .table-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+    .table-number {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .table-meta {
+      display: grid;
+      gap: 0.2rem;
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-pill {
+      border-radius: var(--radius-full);
+      background: var(--color-primary-highlight);
+      color: var(--color-primary);
+      padding: 0.25rem 0.55rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .guest-preview {
+      display: grid;
+      gap: 0.15rem;
+      min-width: 0;
+    }
+    .guest-preview strong {
+      font-size: var(--text-sm);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .guest-preview span {
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+      font-variant-numeric: tabular-nums;
+    }
+    .form-wrap {
+      padding: var(--space-5);
+      display: grid;
+      gap: var(--space-5);
+    }
+    .empty-box {
+      padding: var(--space-8);
+      border-radius: 24px;
+      background: color-mix(in srgb, var(--color-surface-offset) 65%, transparent);
+      color: var(--color-text-muted);
+      text-align: center;
+      border: 1px dashed color-mix(in srgb, var(--color-border) 85%, transparent);
+    }
+    .field-grid {
+      display: grid;
+      gap: var(--space-4);
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+    label {
+      display: grid;
+      gap: 0.45rem;
+      font-size: var(--text-sm);
+      font-weight: 500;
+    }
+    label span {
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
+    .inline-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+    .reservation-list {
+      display: grid;
+      gap: var(--space-3);
+      max-height: 320px;
+      overflow: auto;
+      padding-right: 0.2rem;
+    }
+    .reservation-item {
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface-2);
+      border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+      display: grid;
+      gap: 0.3rem;
+    }
+    .reservation-item strong {
+      font-size: var(--text-sm);
+    }
+    .reservation-item span, .reservation-item small {
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+      font-variant-numeric: tabular-nums;
+    }
+    .legend {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+    }
+    .legend b {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      display: inline-block;
+      background: var(--color-primary-highlight);
+      border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+    }
+    .dot.success {
+      background: var(--color-success-highlight);
+      border-color: color-mix(in srgb, var(--color-success) 25%, transparent);
+    }
+    .dot.neutral {
+      background: var(--color-surface-2);
+      border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
+    }
+    .help-note {
+      color: var(--color-text-muted);
+      font-size: var(--text-xs);
+      margin-top: -0.35rem;
+    }
+    .muted { color: var(--color-text-muted); }
+    .hidden { display: none !important; }
+    .menu-toggle { display: none; }
+
+    @media (max-width: 1100px) {
+      .app-shell { grid-template-columns: 1fr; }
+      .sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(88vw, 340px);
+        z-index: 60;
+        transform: translateX(-100%);
+        transition: transform var(--transition);
+        box-shadow: var(--shadow-lg);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .workspace { grid-template-columns: 1fr; }
+      .menu-toggle { display: inline-flex; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar, .workspace { padding-inline: var(--space-4); }
+      .topbar { height: auto; align-items: flex-start; padding-block: var(--space-4); }
+      .topbar-actions { width: 100%; justify-content: flex-start; }
+      .two-col, .stats { grid-template-columns: 1fr; }
+      .board { min-height: 520px; }
+      .panel, .sidebar-card { border-radius: 22px; }
+      .table-card { width: 116px; min-height: 100px; }
+    }
+  </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
-    <div id="app" class="max-w-6xl mx-auto">
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Logo app tavoli">
+            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+            <path d="M8 9h8M12 9v6M9 15h6"></path>
+          </svg>
+        </div>
+        <div class="brand-copy">
+          <strong>TableFlow</strong>
+          <span>Gestione tavoli e prenotazioni</span>
+        </div>
+      </div>
 
-        <!-- Header -->
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#4f7cac] to-[#5a9bd4] bg-clip-text text-transparent mb-4">GymApp</h1>
-            <p class="text-xl text-gray-600">Allenati smarter con schede personalizzate e tracking</p>
-        </header>
+      <section class="sidebar-card">
+        <h2>Panoramica giorno</h2>
+        <div class="stats">
+          <div class="stat"><span>Tavoli</span><strong id="statTables">0</strong></div>
+          <div class="stat"><span>Prenotati</span><strong id="statBooked">0</strong></div>
+          <div class="stat"><span>Liberi</span><strong id="statFree">0</strong></div>
+          <div class="stat"><span>Data</span><strong id="statDate" style="font-size:1rem;">-</strong></div>
+        </div>
+      </section>
 
-        <!-- Navigazione tabs -->
-        <nav class="flex flex-wrap justify-center gap-4 mb-12">
-            <button onclick="showSection('body-map')" class="btn px-8">Mappa Muscoli</button>
-            <button onclick="showSection('esercizi')" class="btn px-8">Esercizi</button>
-            <button onclick="showSection('schede')" class="btn px-8">Schede</button>
-            <button onclick="showSection('allenamento')" class="btn px-8">Inizia Allenamento</button>
-        </nav>
+      <section class="sidebar-card">
+        <h2>Azioni rapide</h2>
+        <div class="field-grid">
+          <button class="btn btn-primary" id="addTableBtn">+ Aggiungi tavolo</button>
+          <button class="btn btn-secondary" id="duplicateBtn">Duplica selezionato</button>
+          <button class="btn btn-ghost" id="deleteBtn">Elimina selezionato</button>
+        </div>
+        <p class="help-note">Puoi spostare i tavoli trascinandoli nella sala.</p>
+      </section>
 
-        <!-- Sezione Mappa Muscoli -->
-        <section id="body-map" class="hidden md:block">
-            <h2 class="text-3xl font-semibold text-center mb-8 text-gray-800">Seleziona un Muscolo</h2>
-            <div class="flex flex-col md:flex-row gap-12 items-center justify-center">
-                <!-- SVG Body Map (fronte e retro) -->
-                <svg viewBox="0 0 400 800" class="w-48 h-96 muscle-hover" onclick="showEsercizi('petto')">
-                    <!-- Testa -->
-                    <circle cx="200" cy="80" r="40" fill="#f0f4f8" stroke="#d1d5db" stroke-width="3"/>
-                    <!-- Collo/Trapezi -->
-                    <path d="M170 120 Q200 140 230 120 L230 180 Q200 200 170 180 Z" fill="#f0f4f8" stroke="#d1d5db" stroke-width="3" class="muscle-hover" onclick="showEsercizi('petto')"/>
-                    <!-- Petto -->
-                    <path d="M150 180 Q140 240 150 300 Q170 320 200 300 Q230 320 250 300 Q260 240 250 180 Z" fill="#ffebee" stroke="#f48fb1" stroke-width="3" class="muscle-hover" data-muscle="petto"/>
-                    <!-- Addominali -->
-                    <rect x="170" y="300" width="60" height="100" rx="30" fill="#e8f5e8" stroke="#a5d6a7" stroke-width="3" class="muscle-hover" data-muscle="addominali"/>
-                    <!-- Braccia (bicipiti) -->
-                    <path d="M130 200 Q100 280 130 380 L150 360 Q170 380 190 360 Z" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="3" class="muscle-hover" data-muscle="braccia"/>
-                    <path d="M270 200 Q300 280 270 380 L250 360 Q230 380 210 360 Z" fill="#e3f2fd" stroke="#4fc3f7" stroke-width="3" class="muscle-hover" data-muscle="braccia"/>
-                    <!-- Gambe (quads) -->
-                    <path d="M160 400 Q140 550 160 650 L190 630 Q210 650 230 630 Z" fill="#f3e5f5" stroke="#ce93d8" stroke-width="3" class="muscle-hover" data-muscle="gambe"/>
-                    <path d="M240 400 Q260 550 240 650 L210 630 Q190 650 170 630 Z" fill="#f3e5f5" stroke="#ce93d8" stroke-width="3" class="muscle-hover" data-muscle="gambe"/>
-                    <!-- Schiena (retro) sovrapposta semplificata -->
-                    <text x="200" y="500" text-anchor="middle" font-size="12" fill="#9e9e9e">Clicca muscoli</text>
-                </svg>
-                <svg viewBox="0 0 400 800" class="w-48 h-96 muscle-hover rotate-180" onclick="showEsercizi('schiena')">
-                    <!-- Simile ma per retro: dorsali, trapezio, ecc. -->
-                    <circle cx="200" cy="80" r="40" fill="#f0f4f8" stroke="#d1d5db" stroke-width="3"/>
-                    <path d="M150 180 Q120 300 150 450 Q200 480 250 450 Q280 300 250 180 Z" fill="#e8f5e8" stroke="#81c784" stroke-width="3" class="muscle-hover" data-muscle="schiena"/>
-                    <!-- Altri muscoli retro... -->
-                </svg>
+      <section class="sidebar-card">
+        <h2>Legenda</h2>
+        <div class="legend">
+          <b><i class="dot neutral"></i> Libero</b>
+          <b><i class="dot"></i> Selezionato</b>
+          <b><i class="dot success"></i> Prenotato</b>
+        </div>
+      </section>
+    </aside>
+
+    <main class="main-view">
+      <header class="topbar">
+        <div style="display:flex; align-items:flex-start; gap:var(--space-3);">
+          <button class="btn btn-secondary menu-toggle" id="menuToggle" aria-label="Apri menu">☰</button>
+          <div>
+            <h1>Prenotazioni tavoli</h1>
+            <p>Layout libero, selezione giorno e scheda prenotazione completa.</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <label style="min-width: 180px;">
+            <span>Giorno</span>
+            <input type="date" id="selectedDate" />
+          </label>
+          <button class="btn btn-secondary" data-theme-toggle aria-label="Cambia tema">🌙</button>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Sala tavoli</h2>
+              <p>Clicca un tavolo per modificarlo o assegnare una prenotazione.</p>
             </div>
+            <div class="board-toolbar muted">Drag & drop attivo · numero modificabile · evidenza automatica</div>
+          </div>
+          <div class="board" id="board">
+            <div class="board-inner" id="boardInner"></div>
+          </div>
         </section>
 
-        <!-- Sezione Esercizi -->
-        <section id="esercizi" class="hidden">
-            <h2 id="esercizi-title" class="text-3xl font-semibold mb-8 text-gray-800">Tutti gli Esercizi</h2>
-            <div id="lista-esercizi" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            <div class="mt-8 flex gap-4">
-                <input id="new-esercizio-nome" placeholder="Nome esercizio" class="flex-1 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#4f7cac]">
-                <input id="new-esercizio-desc" placeholder="Descrizione" class="flex-1 p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#4f7cac]">
-                <button onclick="addEsercizio()" class="btn">Aggiungi</button>
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Dettagli tavolo</h2>
+              <p id="selectedTableLabel">Seleziona un tavolo dalla sala.</p>
             </div>
+          </div>
+          <div class="form-wrap">
+            <div id="emptySelection" class="empty-box">
+              Seleziona un tavolo per cambiare numero, forma o inserire una prenotazione con nome, orario e note.
+            </div>
+
+            <form id="tableForm" class="field-grid hidden">
+              <div class="two-col">
+                <label>
+                  <span>Numero tavolo</span>
+                  <input type="number" id="tableNumber" min="1" step="1" placeholder="Es. 12" />
+                </label>
+                <label>
+                  <span>Forma</span>
+                  <select id="tableShape">
+                    <option value="round">Rotondo</option>
+                    <option value="square">Quadrato</option>
+                  </select>
+                </label>
+              </div>
+              <div class="inline-actions">
+                <button type="button" class="btn btn-secondary" id="saveTableBtn">Salva tavolo</button>
+                <button type="button" class="btn btn-ghost" id="clearReservationBtn">Libera tavolo</button>
+              </div>
+            </form>
+
+            <form id="reservationForm" class="field-grid hidden">
+              <div class="two-col">
+                <label>
+                  <span>Nome cliente</span>
+                  <input type="text" id="guestName" placeholder="Nome prenotazione" />
+                </label>
+                <label>
+                  <span>Orario</span>
+                  <input type="time" id="reservationTime" />
+                </label>
+              </div>
+              <label>
+                <span>Note opzionali</span>
+                <textarea id="reservationNotes" placeholder="Allergie, seggiolone, compleanno, richieste speciali..."></textarea>
+              </label>
+              <div class="inline-actions">
+                <button type="submit" class="btn btn-primary">Salva prenotazione</button>
+              </div>
+            </form>
+
+            <section>
+              <h2 style="font-size:var(--text-sm); margin:0 0 var(--space-3);">Prenotazioni del giorno</h2>
+              <div id="reservationList" class="reservation-list"></div>
+            </section>
+          </div>
         </section>
+      </section>
+    </main>
+  </div>
 
-        <!-- Sezione Schede -->
-        <section id="schede" class="hidden">
-            <h2 class="text-3xl font-semibold mb-8 text-gray-800">Crea Schede Personalizzate</h2>
-            <div id="schede-lista" class="mb-8"></div>
-            <div class="flex gap-4 mb-8">
-                <input id="scheda-nome" placeholder="Nome scheda (es. Full Body)" class="flex-1 p-3 rounded-xl border border-gray-300">
-                <button onclick="creaScheda()" class="btn">Crea Nuova</button>
+  <script>
+    const appState = {
+      theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+      selectedDate: '',
+      selectedTableId: null,
+      tables: [
+        { id: crypto.randomUUID(), number: 1, shape: 'round', x: 40, y: 40 },
+        { id: crypto.randomUUID(), number: 2, shape: 'square', x: 220, y: 60 },
+        { id: crypto.randomUUID(), number: 3, shape: 'round', x: 400, y: 220 },
+        { id: crypto.randomUUID(), number: 4, shape: 'square', x: 130, y: 250 },
+        { id: crypto.randomUUID(), number: 5, shape: 'round', x: 320, y: 420 },
+      ],
+      reservationsByDate: {}
+    };
+
+    const qs = (sel) => document.querySelector(sel);
+    const boardInner = qs('#boardInner');
+    const selectedDateInput = qs('#selectedDate');
+    const reservationForm = qs('#reservationForm');
+    const tableForm = qs('#tableForm');
+    const emptySelection = qs('#emptySelection');
+    const selectedTableLabel = qs('#selectedTableLabel');
+    const reservationList = qs('#reservationList');
+    const sidebar = qs('#sidebar');
+
+    function setTheme(nextTheme) {
+      appState.theme = nextTheme;
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      const toggle = document.querySelector('[data-theme-toggle]');
+      toggle.textContent = nextTheme === 'dark' ? '☀️' : '🌙';
+      toggle.setAttribute('aria-label', nextTheme === 'dark' ? 'Passa al tema chiaro' : 'Passa al tema scuro');
+    }
+
+    function todayString() {
+      const now = new Date();
+      const off = now.getTimezoneOffset();
+      const local = new Date(now.getTime() - off * 60000);
+      return local.toISOString().slice(0, 10);
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '-';
+      return new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(dateStr + 'T12:00:00'));
+    }
+
+    function getReservationsForDate(dateStr) {
+      if (!appState.reservationsByDate[dateStr]) appState.reservationsByDate[dateStr] = {};
+      return appState.reservationsByDate[dateStr];
+    }
+
+    function getSelectedTable() {
+      return appState.tables.find(t => t.id === appState.selectedTableId) || null;
+    }
+
+    function clamp(val, min, max) { return Math.min(Math.max(val, min), max); }
+
+    function selectTable(id) {
+      appState.selectedTableId = id;
+      render();
+    }
+
+    function addTable(base) {
+      const nextNumber = Math.max(0, ...appState.tables.map(t => Number(t.number) || 0)) + 1;
+      const table = {
+        id: crypto.randomUUID(),
+        number: nextNumber,
+        shape: 'round',
+        x: base?.x ?? 80 + (appState.tables.length % 4) * 140,
+        y: base?.y ?? 80 + (appState.tables.length % 3) * 140,
+      };
+      appState.tables.push(table);
+      selectTable(table.id);
+    }
+
+    function removeSelectedTable() {
+      const selected = getSelectedTable();
+      if (!selected) return;
+      appState.tables = appState.tables.filter(t => t.id !== selected.id);
+      Object.values(appState.reservationsByDate).forEach(day => delete day[selected.id]);
+      appState.selectedTableId = appState.tables[0]?.id ?? null;
+      render();
+    }
+
+    function duplicateSelectedTable() {
+      const selected = getSelectedTable();
+      if (!selected) return;
+      addTable({ x: selected.x + 30, y: selected.y + 30 });
+      const newTable = getSelectedTable();
+      newTable.shape = selected.shape;
+      render();
+    }
+
+    function saveTableDetails() {
+      const selected = getSelectedTable();
+      if (!selected) return;
+      const nextNumber = Number(qs('#tableNumber').value || selected.number);
+      selected.number = nextNumber > 0 ? nextNumber : selected.number;
+      selected.shape = qs('#tableShape').value;
+      render();
+    }
+
+    function clearReservation() {
+      const selected = getSelectedTable();
+      if (!selected) return;
+      const day = getReservationsForDate(appState.selectedDate);
+      delete day[selected.id];
+      render();
+    }
+
+    function saveReservation(evt) {
+      evt.preventDefault();
+      const selected = getSelectedTable();
+      if (!selected) return;
+      const name = qs('#guestName').value.trim();
+      const time = qs('#reservationTime').value;
+      const notes = qs('#reservationNotes').value.trim();
+      if (!name || !time) {
+        alert('Inserisci almeno nome cliente e orario.');
+        return;
+      }
+      const day = getReservationsForDate(appState.selectedDate);
+      day[selected.id] = { name, time, notes };
+      render();
+    }
+
+    function renderBoard() {
+      const reservations = getReservationsForDate(appState.selectedDate);
+      boardInner.innerHTML = '';
+      appState.tables.forEach(table => {
+        const reservation = reservations[table.id];
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = `table-card ${table.shape === 'round' ? 'round' : ''} ${table.id === appState.selectedTableId ? 'selected' : ''} ${reservation ? 'booked' : ''}`;
+        card.style.left = table.x + 'px';
+        card.style.top = table.y + 'px';
+        card.dataset.id = table.id;
+        card.innerHTML = `
+          <div class="table-card-head">
+            <div>
+              <div class="table-meta">Tavolo</div>
+              <div class="table-number">${table.number}</div>
             </div>
-            <div id="scheda-builder" class="hidden">
-                <h3 id="current-scheda-nome" class="text-2xl mb-4"></h3>
-                <div id="esercizi-scheda" class="mb-4"></div>
-                <button onclick="salvaScheda()" class="btn mr-4">Salva Scheda</button>
-                <button onclick="startAllenamento()" class="btn bg-green-500 hover:bg-green-600">Inizia!</button>
-            </div>
-        </section>
+            <span class="status-pill">${reservation ? 'Prenotato' : 'Libero'}</span>
+          </div>
+          <div class="guest-preview">
+            <strong>${reservation ? reservation.name : 'Disponibile'}</strong>
+            <span>${reservation ? reservation.time : 'Nessuna prenotazione'}</span>
+          </div>
+        `;
+        card.addEventListener('click', () => selectTable(table.id));
+        enableDrag(card, table);
+        boardInner.appendChild(card);
+      });
+    }
 
-        <!-- Sezione Allenamento -->
-        <section id="allenamento" class="hidden">
-            <h2 id="allenamento-title" class="text-3xl font-semibold mb-8 text-gray-800">Allenamento: <span id="current-esercizio"></span></h2>
-            <div class="text-center mb-12">
-                <div id="timer" class="mb-8">00:00</div>
-                <div class="text-2xl mb-4">Serie: <span id="serie">1</span>/ <span id="tot-serie">3</span> | Reps: <span id="reps">12</span></div>
-                <div class="flex gap-4 justify-center">
-                    <button onclick="startTimer()" class="btn bg-green-500 hover:bg-green-600 px-12 text-xl">Start</button>
-                    <button onclick="pauseTimer()" class="btn bg-yellow-500 hover:bg-yellow-600 px-12 text-xl">Pause</button>
-                    <button onclick="resetTimer()" class="btn bg-red-500 hover:bg-red-600 px-12 text-xl">Reset</button>
-                    <button onclick="nextSerie()" class="btn px-12 text-xl">Serie Fatta ✓</button>
-                </div>
-            </div>
-            <button onclick="endAllenamento()" class="btn w-full">Fine Allenamento</button>
-        </section>
+    function renderSelectionPanel() {
+      const selected = getSelectedTable();
+      if (!selected) {
+        emptySelection.classList.remove('hidden');
+        tableForm.classList.add('hidden');
+        reservationForm.classList.add('hidden');
+        selectedTableLabel.textContent = 'Seleziona un tavolo dalla sala.';
+        return;
+      }
+      emptySelection.classList.add('hidden');
+      tableForm.classList.remove('hidden');
+      reservationForm.classList.remove('hidden');
+      selectedTableLabel.textContent = `Tavolo ${selected.number} · ${formatDate(appState.selectedDate)}`;
+      qs('#tableNumber').value = selected.number;
+      qs('#tableShape').value = selected.shape;
 
-    </div>
+      const reservation = getReservationsForDate(appState.selectedDate)[selected.id];
+      qs('#guestName').value = reservation?.name ?? '';
+      qs('#reservationTime').value = reservation?.time ?? '';
+      qs('#reservationNotes').value = reservation?.notes ?? '';
+    }
 
-    <script>
-        // Dati esercizi (scaricabili da esercizi.json se su server)
-        let esercizi = {
-            petto: [
-                {name: 'Panca piana con bilanciere', desc: 'Esercizio composto per pettorali, tricipiti e deltoidi anteriori. Sdraiati su panca, impugna bilanciere e abbassa al petto spingendo su.'}[web:2],
-                {name: 'Panca inclinata con manubri', desc: 'Per parte alta pettorali. Sdraiati su panca inclinata, manubri in mano, abbassa e spingi su.'},
-                {name: 'Croci ai cavi', desc: 'Isolamento pettorali. Ai cavi incrociati, braccia tese avanti contraendo il petto.'}
-            ],
-            schiena: [
-                {name: 'Trazioni alla sbarra', desc: 'Per dorsali e bicipiti. Impugna sbarra larga, tira su fino al mento.'[web:2]},
-                {name: 'Rematore con bilanciere', desc: 'Per dorsali medi e trapezio. Chinati, tira bilanciere verso addome.'},
-                {name: 'Pulley basso', desc: 'Seduto, tira maniglia verso addome contraendo la schiena.'}
-            ],
-            spalle: [
-                {name: 'Military press', desc: 'Composto per deltoidi. Seduto o in piedi, spingi bilanciere sopra la testa.'[web:4]},
-                {name: 'Alzate laterali', desc: 'Per deltoidi laterali. Manubri ai lati, alza braccia parallele al suolo.'},
-                {name: 'Alzate frontali', desc: 'Per deltoidi anteriori. Manubri davanti, alza braccia in avanti.'}
-            ],
-            braccia: [
-                {name: 'Curl bicipiti con bilanciere', desc: 'Per bicipiti. In piedi, curla bilanciere verso spalle.'},
-                {name: 'French press', desc: 'Per tricipiti. Sopra la testa, abbassa manubrio dietro la nuca.'[web:4]},
-                {name: 'Pushdown tricipiti', desc: 'Ai cavi, spingi maniglia giù estendendo gomiti.'}
-            ],
-            gambe: [
-                {name: 'Squat', desc: 'Per quadricipiti, glutei e femorali. Bilanciere sulle spalle, scendi in accosciata.'[web:3]},
-                {name: 'Leg press', desc: 'Macchina per gambe. Spingi piattaforma via con piedi.'},
-                {name: 'Leg curl', desc: 'Per femorali. Sdraiato prono, curla talloni verso glutei.'}
-            ],
-            addominali: [
-                {name: 'Crunch', desc: 'Per addominali alti. Sdraiato, solleva spalle contraendo addome.'[web:8]},
-                {name: 'Plank', desc: 'Isometria per core. Avambracci a terra, corpo dritto.'},
-                {name: 'Leg raises', desc: 'Per addominali bassi. Appeso o sdraiato, alza gambe.'}
-            ]
-        };
+    function renderReservationsList() {
+      const dayReservations = getReservationsForDate(appState.selectedDate);
+      const items = appState.tables
+        .map(table => ({ table, reservation: dayReservations[table.id] }))
+        .filter(item => item.reservation)
+        .sort((a, b) => a.reservation.time.localeCompare(b.reservation.time));
 
-        let schede = JSON.parse(localStorage.getItem('schede')) || [];
-        let currentScheda = null;
-        let timerInterval;
-        let tempo = 0;
-        let reps = 12;
-        let serie = 1;
-        let totSerie = 3;
-        let currentEsercizioIndex = 0;
+      reservationList.innerHTML = '';
+      if (!items.length) {
+        reservationList.innerHTML = '<div class="empty-box" style="padding:var(--space-5);">Nessuna prenotazione salvata per questa data.</div>';
+        return;
+      }
 
-        // Mostra sezione
-        function showSection(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            if (id === 'esercizi') renderEsercizi();
-            if (id === 'schede') renderSchede();
-        }
+      items.forEach(({ table, reservation }) => {
+        const item = document.createElement('article');
+        item.className = 'reservation-item';
+        item.innerHTML = `
+          <strong>Tavolo ${table.number} · ${reservation.name}</strong>
+          <span>${formatDate(appState.selectedDate)} · ${reservation.time}</span>
+          <small>${reservation.notes ? reservation.notes : 'Nessuna nota'}</small>
+        `;
+        item.addEventListener('click', () => selectTable(table.id));
+        reservationList.appendChild(item);
+      });
+    }
 
-        // Event listeners per muscoli SVG
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('[data-muscle]').forEach(el => {
-                el.addEventListener('click', (e) => {
-                    const muscle = e.target.dataset.muscle;
-                    showEsercizi(muscle);
-                });
-            });
-        });
+    function renderStats() {
+      const reservations = getReservationsForDate(appState.selectedDate);
+      const booked = appState.tables.filter(t => reservations[t.id]).length;
+      qs('#statTables').textContent = appState.tables.length;
+      qs('#statBooked').textContent = booked;
+      qs('#statFree').textContent = appState.tables.length - booked;
+      qs('#statDate').textContent = formatDate(appState.selectedDate);
+    }
 
-        // Mostra esercizi per muscolo
-        function showEsercizi(muscolo) {
-            document.getElementById('esercizi-title').textContent = `Esercizi per ${muscolo.charAt(0).toUpperCase() + muscolo.slice(1)}`;
-            esercizi[muscolo] = esercizi[muscolo] || [];
-            renderEsercizi();
-            showSection('esercizi');
-        }
+    function render() {
+      renderBoard();
+      renderSelectionPanel();
+      renderReservationsList();
+      renderStats();
+      if (window.innerWidth <= 1100) sidebar.classList.remove('open');
+    }
 
-        // Render lista esercizi
-        function renderEsercizi() {
-            const lista = document.getElementById('lista-esercizi');
-            const currentMuscle = document.getElementById('esercizi-title').textContent.split(' ')[2]?.toLowerCase() || 'tutti';
-            const filtered = currentMuscle === 'tutti' ? Object.values(esercizi).flat() : esercizi[currentMuscle] || [];
-            lista.innerHTML = filtered.map(ex => `
-                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-all">
-                    <h3 class="font-semibold text-xl mb-2">${ex.name}</h3>
-                    <p class="text-gray-600 mb-4">${ex.desc}</p>
-                    <div class="flex gap-2">
-                        <button onclick="addToScheda('${ex.name}')" class="px-4 py-2 bg-[#4f7cac]/20 text-[#4f7cac] rounded-xl hover:bg-[#4f7cac]/40">Aggiungi a Scheda</button>
-                    </div>
-                </div>
-            `).join('');
-        }
+    function enableDrag(element, table) {
+      let startX = 0, startY = 0, originalX = 0, originalY = 0;
+      const onPointerMove = (event) => {
+        table.x = clamp(originalX + (event.clientX - startX), 0, Math.max(0, boardInner.clientWidth - 140));
+        table.y = clamp(originalY + (event.clientY - startY), 0, Math.max(0, boardInner.clientHeight - 120));
+        element.style.left = table.x + 'px';
+        element.style.top = table.y + 'px';
+      };
+      const onPointerUp = () => {
+        element.classList.remove('dragging');
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerup', onPointerUp);
+      };
+      element.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0) return;
+        startX = event.clientX;
+        startY = event.clientY;
+        originalX = table.x;
+        originalY = table.y;
+        selectTable(table.id);
+        element.classList.add('dragging');
+        window.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('pointerup', onPointerUp);
+      });
+    }
 
-        // Aggiungi nuovo esercizio
-        function addEsercizio() {
-            const nome = document.getElementById('new-esercizio-nome').value;
-            const desc = document.getElementById('new-esercizio-desc').value;
-            if (!nome || !desc) return;
-            const muscle = document.getElementById('esercizi-title').textContent.split(' ')[2]?.toLowerCase() || 'altro';
-            if (!esercizi[muscle]) esercizi[muscle] = [];
-            esercizi[muscle].push({name: nome, desc: desc});
-            renderEsercizi();
-            document.getElementById('new-esercizio-nome').value = '';
-            document.getElementById('new-esercizio-desc').value = '';
-            saveData();
-        }
+    document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
+      setTheme(appState.theme === 'dark' ? 'light' : 'dark');
+    });
 
-        // Gestione Schede
-        function renderSchede() {
-            document.getElementById('schede-lista').innerHTML = schede.map((s, i) => `
-                <div class="bg-white p-6 rounded-2xl shadow-md mb-4">
-                    <h3 class="font-semibold text-xl">${s.nome}</h3>
-                    <p>${s.esercizi.length} esercizi</p>
-                    <div class="flex gap-2 mt-4">
-                        <button onclick="loadScheda(${i})" class="px-4 py-2 bg-blue-500 text-white rounded-xl text-sm">Modifica</button>
-                        <button onclick="deleteScheda(${i})" class="px-4 py-2 bg-red-500 text-white rounded-xl text-sm">Elimina</button>
-                    </div>
-                </div>
-            `).join('');
-        }
+    selectedDateInput.addEventListener('change', (event) => {
+      appState.selectedDate = event.target.value;
+      render();
+    });
+    reservationForm.addEventListener('submit', saveReservation);
+    qs('#addTableBtn').addEventListener('click', () => addTable());
+    qs('#duplicateBtn').addEventListener('click', duplicateSelectedTable);
+    qs('#deleteBtn').addEventListener('click', removeSelectedTable);
+    qs('#saveTableBtn').addEventListener('click', saveTableDetails);
+    qs('#clearReservationBtn').addEventListener('click', clearReservation);
+    qs('#menuToggle').addEventListener('click', () => sidebar.classList.toggle('open'));
 
-        function creaScheda() {
-            const nome = document.getElementById('scheda-nome').value;
-            if (!nome) return;
-            currentScheda = {nome, esercizi: []};
-            document.getElementById('current-scheda-nome').textContent = nome;
-            document.getElementById('scheda-builder').classList.remove('hidden');
-            document.getElementById('scheda-nome').value = '';
-            renderEserciziScheda();
-        }
-
-        function addToScheda(nome) {
-            if (!currentScheda) return alert('Crea prima una scheda!');
-            const ex = {name: nome, serie: 3, reps: 12};
-            if (!currentScheda.esercizi.some(e => e.name === nome)) {
-                currentScheda.esercizi.push(ex);
-                renderEserciziScheda();
-            }
-        }
-
-        function renderEserciziScheda() {
-            document.getElementById('esercizi-scheda').innerHTML = currentScheda.esercizi.map((ex, i) => `
-                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-xl mb-2">
-                    <span>${ex.name} (${ex.serie}x${ex.reps})</span>
-                    <button onclick="removeFromScheda(${i})" class="text-red-500">✕</button>
-                </div>
-            `).join('');
-        }
-
-        function removeFromScheda(i) {
-            currentScheda.esercizi.splice(i, 1);
-            renderEserciziScheda();
-        }
-
-        function salvaScheda() {
-            if (schede.some(s => s.nome === currentScheda.nome)) {
-                const idx = schede.findIndex(s => s.nome === currentScheda.nome);
-                schede[idx] = currentScheda;
-            } else {
-                schede.push(currentScheda);
-            }
-            currentScheda = null;
-            document.getElementById('scheda-builder').classList.add('hidden');
-            renderSchede();
-            saveData();
-        }
-
-        function loadScheda(i) {
-            currentScheda = {...schede[i]};
-            document.getElementById('current-scheda-nome').textContent = currentScheda.nome;
-            document.getElementById('scheda-builder').classList.remove('hidden');
-            renderEserciziScheda();
-        }
-
-        function deleteScheda(i) {
-            schede.splice(i, 1);
-            renderSchede();
-            saveData();
-        }
-
-        // Allenamento
-        function startAllenamento() {
-            if (!currentScheda || currentScheda.esercizi.length === 0) return alert('Crea e salva una scheda prima!');
-            showSection('allenamento');
-            nextEsercizio();
-        }
-
-        function nextEsercizio() {
-            if (currentEsercizioIndex >= currentScheda.esercizi.length) {
-                endAllenamento();
-                return;
-            }
-            const ex = currentScheda.esercizi[currentEsercizioIndex];
-            document.getElementById('current-esercizio').textContent = ex.name;
-            serie = 1;
-            totSerie = ex.serie;
-            reps = ex.reps;
-            updateDisplay();
-        }
-
-        function nextSerie() {
-            serie++;
-            if (serie > totSerie) {
-                currentEsercizioIndex++;
-                nextEsercizio();
-            } else {
-                updateDisplay();
-            }
-        }
-
-        function updateDisplay() {
-            document.getElementById('serie').textContent = serie;
-            document.getElementById('tot-serie').textContent = totSerie;
-            document.getElementById('reps').textContent = reps;
-        }
-
-        // Timer
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                tempo++;
-                const mins = Math.floor(tempo / 60);
-                const secs = tempo % 60;
-                document.getElementById('timer').textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-            }, 1000);
-        }
-
-        function pauseTimer() {
-            clearInterval(timerInterval);
-        }
-
-        function resetTimer() {
-            clearInterval(timerInterval);
-            tempo = 0;
-            document.getElementById('timer').textContent = '00:00';
-        }
-
-        function endAllenamento() {
-            showSection('schede');
-            alert('Allenamento completato! 💪');
-            currentEsercizioIndex = 0;
-        }
-
-        // Salva/Load dati locali
-        function saveData() {
-            localStorage.setItem('schede', JSON.stringify(schede));
-            localStorage.setItem('esercizi', JSON.stringify(esercizi));
-        }
-
-        // Load iniziale
-        if (localStorage.getItem('esercizi')) {
-            esercizi = JSON.parse(localStorage.getItem('esercizi'));
-        }
-        renderSchede();
-        showSection('body-map'); // Default
-    </script>
+    setTheme(appState.theme);
+    appState.selectedDate = todayString();
+    selectedDateInput.value = appState.selectedDate;
+    appState.selectedTableId = appState.tables[0]?.id ?? null;
+    render();
+  </script>
 </body>
 </html>
