@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prenotazioni Tavoli</title>
+  <title>Prenotazioni Tavoli - SumUp Style</title>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
   <style>
     :root, [data-theme="light"] {
@@ -22,82 +22,68 @@
       --space-10: 2.5rem;
       --space-12: 3rem;
       --space-16: 4rem;
-      --color-bg: #f7f6f2;
-      --color-surface: #f9f8f5;
-      --color-surface-2: #fbfbf9;
-      --color-surface-offset: #f3f0ec;
-      --color-surface-dynamic: #e6e4df;
-      --color-border: #d4d1ca;
-      --color-divider: #dcd9d5;
-      --color-text: #28251d;
-      --color-text-muted: #7a7974;
-      --color-text-faint: #bab9b4;
-      --color-text-inverse: #f9f8f4;
-      --color-primary: #01696f;
-      --color-primary-hover: #0c4e54;
-      --color-primary-highlight: #cedcd8;
-      --color-success: #437a22;
-      --color-success-highlight: #d4dfcc;
-      --color-warning: #964219;
-      --color-error: #a12c7b;
+      --color-bg: #f8f9fa;
+      --color-surface: #ffffff;
+      --color-surface-2: #f8f9fa;
+      --color-surface-offset: #f1f3f4;
+      --color-border: #e0e2e5;
+      --color-divider: #e9ecef;
+      --color-text: #212529;
+      --color-text-muted: #6c757d;
+      --color-text-faint: #adb5bd;
+      --color-text-inverse: #ffffff;
+      --color-primary: #00d4aa;
+      --color-primary-hover: #00b894;
+      --color-primary-highlight: #e8f8f5;
+      --color-success: #28a745;
+      --color-success-highlight: #d4edda;
+      --color-warning: #ffc107;
+      --color-error: #dc3545;
       --radius-sm: 0.375rem;
       --radius-md: 0.5rem;
       --radius-lg: 0.75rem;
       --radius-xl: 1rem;
       --radius-full: 9999px;
-      --shadow-sm: 0 1px 2px rgba(40, 37, 29, 0.06);
-      --shadow-md: 0 8px 24px rgba(40, 37, 29, 0.08);
-      --shadow-lg: 0 18px 40px rgba(40, 37, 29, 0.12);
-      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.2);
+      --transition: 200ms ease;
       --font-body: 'Satoshi', 'Inter', sans-serif;
       --sidebar-w: 300px;
       --header-h: 76px;
     }
 
     [data-theme="dark"] {
-      --color-bg: #171614;
-      --color-surface: #1c1b19;
-      --color-surface-2: #201f1d;
-      --color-surface-offset: #1d1c1a;
-      --color-surface-dynamic: #2d2c2a;
-      --color-border: #393836;
-      --color-divider: #262523;
-      --color-text: #cdccca;
-      --color-text-muted: #9a9997;
-      --color-text-faint: #6a6967;
-      --color-text-inverse: #171614;
-      --color-primary: #4f98a3;
-      --color-primary-hover: #227f8b;
-      --color-primary-highlight: #313b3b;
-      --color-success: #6daa45;
-      --color-success-highlight: #3a4435;
-      --color-warning: #bb653b;
-      --color-error: #d163a7;
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-      --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.42);
+      --color-bg: #1a1d21;
+      --color-surface: #2d313a;
+      --color-surface-2: #363c47;
+      --color-surface-offset: #252931;
+      --color-border: #404857;
+      --color-divider: #2a3039;
+      --color-text: #e8eaed;
+      --color-text-muted: #a0a6ad;
+      --color-text-faint: #72797f;
+      --color-text-inverse: #1a1d21;
+      --color-primary: #00d4aa;
+      --color-primary-hover: #00b894;
+      --color-primary-highlight: #1a3d38;
+      --color-success: #28a745;
+      --color-success-highlight: #1e4025;
+      --color-warning: #ffc107;
+      --color-error: #dc3545;
     }
 
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme]) {
-        --color-bg: #171614;
-        --color-surface: #1c1b19;
-        --color-surface-2: #201f1d;
-        --color-surface-offset: #1d1c1a;
-        --color-surface-dynamic: #2d2c2a;
-        --color-border: #393836;
-        --color-divider: #262523;
-        --color-text: #cdccca;
-        --color-text-muted: #9a9997;
-        --color-text-faint: #6a6967;
-        --color-text-inverse: #171614;
-        --color-primary: #4f98a3;
-        --color-primary-hover: #227f8b;
-        --color-primary-highlight: #313b3b;
-        --color-success: #6daa45;
-        --color-success-highlight: #3a4435;
-        --color-warning: #bb653b;
-        --color-error: #d163a7;
+        --color-bg: #1a1d21;
+        --color-surface: #2d313a;
+        --color-surface-2: #363c47;
+        --color-surface-offset: #252931;
+        --color-border: #404857;
+        --color-divider: #2a3039;
+        --color-text: #e8eaed;
+        --color-text-muted: #a0a6ad;
+        --color-text-faint: #72797f;
       }
     }
 
@@ -107,8 +93,8 @@
       font-family: var(--font-body);
       font-size: var(--text-base);
       color: var(--color-text);
-      background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-primary) 9%, transparent), transparent 28%), var(--color-bg);
-      line-height: 1.5;
+      background: var(--color-bg);
+      line-height: 1.6;
     }
     button, input, textarea, select { font: inherit; }
     button { cursor: pointer; }
@@ -116,16 +102,15 @@
       width: 100%;
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      background: var(--color-surface-2);
+      background: var(--color-surface);
       color: var(--color-text);
-      padding: 0.9rem 1rem;
-      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+      padding: 0.75rem 1rem;
+      transition: all var(--transition);
     }
-    textarea { min-height: 100px; resize: vertical; }
     input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible {
       outline: none;
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 18%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
     }
     .app-shell {
       display: grid;
@@ -133,14 +118,13 @@
       min-height: 100vh;
     }
     .sidebar {
-      background: color-mix(in srgb, var(--color-surface) 82%, transparent);
+      background: var(--color-surface);
       border-right: 1px solid var(--color-divider);
       padding: var(--space-6);
       position: sticky;
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      backdrop-filter: blur(18px);
     }
     .brand {
       display: flex;
@@ -149,10 +133,10 @@
       margin-bottom: var(--space-8);
     }
     .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--color-primary), color-mix(in srgb, var(--color-primary) 65%, var(--color-surface-offset)));
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
       color: var(--color-text-inverse);
       display: grid;
       place-items: center;
@@ -160,48 +144,45 @@
     }
     .brand-copy strong {
       display: block;
-      font-size: var(--text-sm);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .brand-copy span {
-      color: var(--color-text-muted);
-      font-size: var(--text-xs);
+      font-size: var(--text-base);
+      font-weight: 700;
     }
     .sidebar-card {
-      background: var(--color-surface);
+      background: var(--color-surface-2);
       border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
+      border-radius: var(--radius-lg);
       padding: var(--space-5);
-      box-shadow: var(--shadow-sm);
       margin-bottom: var(--space-5);
     }
-    .sidebar-card h2 {
-      font-size: var(--text-sm);
+    .sidebar-card h3 {
       margin: 0 0 var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      font-weight: 600;
     }
     .stats {
       display: grid;
       gap: var(--space-3);
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(2, 1fr);
     }
     .stat {
-      background: var(--color-surface-2);
-      border-radius: var(--radius-lg);
-      padding: var(--space-4);
-      border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+      text-align: center;
+      padding: var(--space-3);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
     }
-    .stat span {
+    .stat-value {
       display: block;
+      font-size: var(--text-xl);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-label {
       font-size: var(--text-xs);
       color: var(--color-text-muted);
-      margin-bottom: var(--space-2);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-    .stat strong {
-      font-size: var(--text-lg);
-      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.05em;
+      font-weight: 500;
     }
     .main-view {
       min-width: 0;
@@ -213,297 +194,227 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: var(--space-4);
-      padding: var(--space-4) var(--space-6);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: color-mix(in srgb, var(--color-bg) 86%, transparent);
-      backdrop-filter: blur(16px);
+      padding: 0 var(--space-6);
       border-bottom: 1px solid var(--color-divider);
+      background: var(--color-surface);
     }
     .topbar h1 {
       margin: 0;
       font-size: var(--text-xl);
-      line-height: 1.1;
-    }
-    .topbar p {
-      margin: 0;
-      color: var(--color-text-muted);
-      font-size: var(--text-sm);
+      font-weight: 600;
     }
     .topbar-actions {
       display: flex;
       align-items: center;
       gap: var(--space-3);
-      flex-wrap: wrap;
-      justify-content: flex-end;
     }
     .btn {
-      min-height: 44px;
+      height: 44px;
       border-radius: var(--radius-full);
-      border: 1px solid transparent;
-      padding: 0.8rem 1.15rem;
+      border: none;
+      padding: 0 1.25rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.55rem;
+      gap: 0.5rem;
       font-size: var(--text-sm);
-      font-weight: 700;
-      transition: transform var(--transition), background var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+      font-weight: 600;
+      transition: all var(--transition);
+      box-shadow: var(--shadow-sm);
     }
-    .btn:hover { transform: translateY(-1px); }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
     .btn-primary {
       background: var(--color-primary);
       color: var(--color-text-inverse);
-      box-shadow: var(--shadow-md);
     }
     .btn-primary:hover { background: var(--color-primary-hover); }
     .btn-secondary {
-      background: var(--color-surface);
-      border-color: var(--color-border);
+      background: var(--color-surface-offset);
       color: var(--color-text);
+      border: 1px solid var(--color-border);
     }
-    .btn-ghost {
-      background: transparent;
-      border-color: var(--color-border);
-      color: var(--color-text-muted);
+    .btn-edit {
+      background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+      color: #856404;
+      border: 1px solid var(--color-warning);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: var(--text-xs);
+    }
+    .btn-edit:hover {
+      background: var(--color-warning);
+      color: #212529;
+      transform: translateY(-2px);
     }
     .workspace {
       padding: var(--space-6);
       display: grid;
       gap: var(--space-6);
       grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
-      align-items: start;
     }
     .panel {
-      background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+      background: var(--color-surface);
       border: 1px solid var(--color-border);
-      border-radius: 28px;
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius-xl);
       overflow: hidden;
-      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-sm);
     }
     .panel-head {
-      padding: var(--space-5) var(--space-5) var(--space-4);
+      padding: var(--space-5);
       border-bottom: 1px solid var(--color-divider);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: var(--space-4);
-      flex-wrap: wrap;
     }
     .panel-head h2 {
       margin: 0;
       font-size: var(--text-lg);
+      font-weight: 600;
     }
     .panel-head p {
-      margin: 0.35rem 0 0;
+      margin: 0.25rem 0 0;
       font-size: var(--text-sm);
       color: var(--color-text-muted);
     }
-    .board-toolbar {
-      display: flex;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-      align-items: center;
+    .edit-mode .table-card {
+      cursor: grab !important;
     }
     .board {
       position: relative;
-      min-height: 680px;
-      background:
-        linear-gradient(90deg, color-mix(in srgb, var(--color-border) 22%, transparent) 1px, transparent 1px),
-        linear-gradient(color-mix(in srgb, var(--color-border) 22%, transparent) 1px, transparent 1px),
-        linear-gradient(180deg, color-mix(in srgb, var(--color-surface-2) 60%, transparent), color-mix(in srgb, var(--color-surface-offset) 70%, transparent));
-      background-size: 40px 40px, 40px 40px, 100% 100%;
-      border-radius: 0 0 28px 28px;
-      overflow: auto;
+      min-height: 600px;
+      background: 
+        linear-gradient(90deg, var(--color-divider) 1px, transparent 1px),
+        linear-gradient(var(--color-divider) 1px, transparent 1px),
+        var(--color-surface-2);
+      background-size: 32px 32px, 32px 32px, 100% 100%;
       padding: var(--space-5);
-      touch-action: none;
+      overflow: auto;
     }
     .board-inner {
       position: relative;
-      min-height: 1100px;
+      min-height: 1000px;
       min-width: 100%;
     }
     .table-card {
       position: absolute;
-      width: 130px;
-      min-height: 108px;
-      border-radius: 26px;
-      border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
-      background: color-mix(in srgb, var(--color-surface-2) 94%, transparent);
+      width: 120px;
+      height: 100px;
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--color-border);
+      background: var(--color-surface);
       box-shadow: var(--shadow-md);
-      padding: var(--space-4);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: var(--space-3);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      font-size: var(--text-lg);
+      color: var(--color-text);
+      transition: all var(--transition);
       user-select: none;
-      cursor: grab;
-      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
     }
     .table-card.round { border-radius: 999px; }
     .table-card.selected {
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 18%, transparent), var(--shadow-lg);
+      box-shadow: 0 0 0 4px var(--color-primary-highlight), var(--shadow-lg);
+      transform: scale(1.05);
     }
     .table-card.booked {
-      background: color-mix(in srgb, var(--color-success-highlight) 72%, var(--color-surface-2));
-      border-color: color-mix(in srgb, var(--color-success) 35%, var(--color-border));
-    }
-    .table-card.booked .status-pill {
-      background: color-mix(in srgb, var(--color-success) 15%, transparent);
+      background: var(--color-success-highlight);
+      border-color: var(--color-success);
       color: var(--color-success);
     }
     .table-card.dragging {
-      cursor: grabbing;
-      transform: scale(1.02) rotate(1deg);
+      cursor: grabbing !important;
+      transform: rotate(5deg) scale(1.1) !important;
+      z-index: 1000;
       box-shadow: var(--shadow-lg);
-      z-index: 999;
-    }
-    .table-card-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: var(--space-2);
     }
     .table-number {
-      font-size: 1.35rem;
-      font-weight: 700;
-      line-height: 1;
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.2;
     }
-    .table-meta {
-      display: grid;
-      gap: 0.2rem;
+    .table-status {
       font-size: var(--text-xs);
-      color: var(--color-text-muted);
+      font-weight: 500;
+      margin-top: 0.25rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .status-pill {
-      border-radius: var(--radius-full);
-      background: var(--color-primary-highlight);
-      color: var(--color-primary);
-      padding: 0.25rem 0.55rem;
-      font-size: 0.72rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-    .guest-preview {
-      display: grid;
-      gap: 0.15rem;
-      min-width: 0;
-    }
-    .guest-preview strong {
-      font-size: var(--text-sm);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .guest-preview span {
-      color: var(--color-text-muted);
-      font-size: var(--text-xs);
-      font-variant-numeric: tabular-nums;
-    }
-    .form-wrap {
+    .form-section {
       padding: var(--space-5);
       display: grid;
-      gap: var(--space-5);
+      gap: var(--space-4);
     }
-    .empty-box {
+    .empty-state {
       padding: var(--space-8);
-      border-radius: 24px;
-      background: color-mix(in srgb, var(--color-surface-offset) 65%, transparent);
-      color: var(--color-text-muted);
       text-align: center;
-      border: 1px dashed color-mix(in srgb, var(--color-border) 85%, transparent);
-    }
-    .field-grid {
-      display: grid;
-      gap: var(--space-4);
-    }
-    .two-col {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-4);
-    }
-    label {
-      display: grid;
-      gap: 0.45rem;
-      font-size: var(--text-sm);
-      font-weight: 500;
-    }
-    label span {
       color: var(--color-text-muted);
-      font-size: var(--text-xs);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 700;
     }
-    .inline-actions {
+    .field {
       display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-3);
+      flex-direction: column;
+      gap: 0.5rem;
     }
-    .reservation-list {
-      display: grid;
-      gap: var(--space-3);
-      max-height: 320px;
-      overflow: auto;
-      padding-right: 0.2rem;
+    .field-label {
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--color-text);
     }
     .reservation-item {
       padding: var(--space-4);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       background: var(--color-surface-2);
-      border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
-      display: grid;
-      gap: 0.3rem;
+      border-left: 4px solid var(--color-primary);
+      cursor: pointer;
+      transition: all var(--transition);
     }
-    .reservation-item strong {
+    .reservation-item:hover {
+      background: color-mix(in srgb, var(--color-primary-highlight) 20%, var(--color-surface-2));
+    }
+    .reservation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.25rem;
+    }
+    .reservation-name {
+      font-weight: 700;
       font-size: var(--text-sm);
     }
-    .reservation-item span, .reservation-item small {
-      color: var(--color-text-muted);
+    .reservation-time {
       font-size: var(--text-xs);
-      font-variant-numeric: tabular-nums;
-    }
-    .legend {
-      display: flex;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-      color: var(--color-text-muted);
-      font-size: var(--text-xs);
-    }
-    .legend b {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+      color: var(--color-success);
       font-weight: 600;
     }
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      display: inline-block;
-      background: var(--color-primary-highlight);
-      border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
-    }
-    .dot.success {
-      background: var(--color-success-highlight);
-      border-color: color-mix(in srgb, var(--color-success) 25%, transparent);
-    }
-    .dot.neutral {
-      background: var(--color-surface-2);
-      border-color: color-mix(in srgb, var(--color-border) 80%, transparent);
-    }
-    .help-note {
-      color: var(--color-text-muted);
+    .reservation-table {
       font-size: var(--text-xs);
-      margin-top: -0.35rem;
+      color: var(--color-text-muted);
     }
-    .muted { color: var(--color-text-muted); }
+    .reservation-notes {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      line-height: 1.4;
+    }
+    .mode-indicator {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      box-shadow: var(--shadow-lg);
+      z-index: 100;
+    }
     .hidden { display: none !important; }
     .menu-toggle { display: none; }
 
@@ -511,26 +422,21 @@
       .app-shell { grid-template-columns: 1fr; }
       .sidebar {
         position: fixed;
-        inset: 0 auto 0 0;
-        width: min(88vw, 340px);
-        z-index: 60;
+        inset: 0;
+        width: min(90vw, 350px);
+        z-index: 100;
         transform: translateX(-100%);
         transition: transform var(--transition);
-        box-shadow: var(--shadow-lg);
       }
       .sidebar.open { transform: translateX(0); }
       .workspace { grid-template-columns: 1fr; }
       .menu-toggle { display: inline-flex; }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 768px) {
       .topbar, .workspace { padding-inline: var(--space-4); }
-      .topbar { height: auto; align-items: flex-start; padding-block: var(--space-4); }
-      .topbar-actions { width: 100%; justify-content: flex-start; }
-      .two-col, .stats { grid-template-columns: 1fr; }
-      .board { min-height: 520px; }
-      .panel, .sidebar-card { border-radius: 22px; }
-      .table-card { width: 116px; min-height: 100px; }
+      .table-card { width: 100px; height: 80px; }
+      .table-number { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -538,63 +444,64 @@
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Logo app tavoli">
-            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
-            <path d="M8 9h8M12 9v6M9 15h6"></path>
+        <div class="brand-mark">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="4" width="18" height="14" rx="2"/>
+            <circle cx="12" cy="10" r="2"/>
+            <path d="M8 16h8"/>
           </svg>
         </div>
         <div class="brand-copy">
-          <strong>TableFlow</strong>
-          <span>Gestione tavoli e prenotazioni</span>
+          <strong>Table Manager</strong>
         </div>
       </div>
 
       <section class="sidebar-card">
-        <h2>Panoramica giorno</h2>
+        <h3>Statistiche</h3>
         <div class="stats">
-          <div class="stat"><span>Tavoli</span><strong id="statTables">0</strong></div>
-          <div class="stat"><span>Prenotati</span><strong id="statBooked">0</strong></div>
-          <div class="stat"><span>Liberi</span><strong id="statFree">0</strong></div>
-          <div class="stat"><span>Data</span><strong id="statDate" style="font-size:1rem;">-</strong></div>
+          <div class="stat">
+            <span class="stat-value" id="statTables">5</span>
+            <span class="stat-label">Tavoli</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="statBooked">0</span>
+            <span class="stat-label">Prenotati</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="statFree">5</span>
+            <span class="stat-label">Liberi</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="statDate">-</span>
+            <span class="stat-label">Oggi</span>
+          </div>
         </div>
       </section>
 
       <section class="sidebar-card">
-        <h2>Azioni rapide</h2>
-        <div class="field-grid">
-          <button class="btn btn-primary" id="addTableBtn">+ Aggiungi tavolo</button>
-          <button class="btn btn-secondary" id="duplicateBtn">Duplica selezionato</button>
-          <button class="btn btn-ghost" id="deleteBtn">Elimina selezionato</button>
+        <h3 id="sidebarActionsTitle">Controlli</h3>
+        <div id="normalActions">
+          <button class="btn btn-edit w-full" id="editModeBtn">✏️ Modalità Modifica</button>
         </div>
-        <p class="help-note">Puoi spostare i tavoli trascinandoli nella sala.</p>
-      </section>
-
-      <section class="sidebar-card">
-        <h2>Legenda</h2>
-        <div class="legend">
-          <b><i class="dot neutral"></i> Libero</b>
-          <b><i class="dot"></i> Selezionato</b>
-          <b><i class="dot success"></i> Prenotato</b>
+        <div id="editActions" class="hidden">
+          <button class="btn btn-primary w-full mb-3" id="addTableBtn">+ Nuovo Tavolo</button>
+          <button class="btn btn-secondary w-full mb-3" id="duplicateBtn">Duplica</button>
+          <button class="btn btn-secondary w-full" id="deleteBtn">Elimina</button>
         </div>
       </section>
     </aside>
 
     <main class="main-view">
       <header class="topbar">
-        <div style="display:flex; align-items:flex-start; gap:var(--space-3);">
-          <button class="btn btn-secondary menu-toggle" id="menuToggle" aria-label="Apri menu">☰</button>
-          <div>
-            <h1>Prenotazioni tavoli</h1>
-            <p>Layout libero, selezione giorno e scheda prenotazione completa.</p>
-          </div>
+        <div>
+          <button class="btn btn-secondary menu-toggle" id="menuToggle">☰</button>
+          <h1>Prenotazioni Tavoli</h1>
         </div>
         <div class="topbar-actions">
-          <label style="min-width: 180px;">
-            <span>Giorno</span>
+          <label style="min-width: 160px;">
             <input type="date" id="selectedDate" />
           </label>
-          <button class="btn btn-secondary" data-theme-toggle aria-label="Cambia tema">🌙</button>
+          <button class="btn btn-secondary" data-theme-toggle>🌙</button>
         </div>
       </header>
 
@@ -602,10 +509,10 @@
         <section class="panel">
           <div class="panel-head">
             <div>
-              <h2>Sala tavoli</h2>
-              <p>Clicca un tavolo per modificarlo o assegnare una prenotazione.</p>
+              <h2>Pianta della sala</h2>
+              <p id="boardSubtitle">Clicca sui tavoli per vedere i dettagli</p>
             </div>
-            <div class="board-toolbar muted">Drag & drop attivo · numero modificabile · evidenza automatica</div>
+            <div id="editModeIndicator" class="hidden mode-indicator">✏️ MODIFICA ATTIVA</div>
           </div>
           <div class="board" id="board">
             <div class="board-inner" id="boardInner"></div>
@@ -615,59 +522,47 @@
         <section class="panel">
           <div class="panel-head">
             <div>
-              <h2>Dettagli tavolo</h2>
-              <p id="selectedTableLabel">Seleziona un tavolo dalla sala.</p>
+              <h2 id="panelTitle">Dettagli</h2>
+              <p id="panelSubtitle">Seleziona un tavolo</p>
             </div>
           </div>
-          <div class="form-wrap">
-            <div id="emptySelection" class="empty-box">
-              Seleziona un tavolo per cambiare numero, forma o inserire una prenotazione con nome, orario e note.
+          <div class="form-section">
+            <div id="emptyState" class="empty-state">
+              <div style="font-size: 3rem; margin-bottom: var(--space-4);">👆</div>
+              <p style="font-weight: 600; margin: 0 0 var(--space-2);">Clicca su un tavolo</p>
+              <p>per visualizzare nome cliente, orario e note della prenotazione.</p>
             </div>
 
-            <form id="tableForm" class="field-grid hidden">
-              <div class="two-col">
-                <label>
-                  <span>Numero tavolo</span>
-                  <input type="number" id="tableNumber" min="1" step="1" placeholder="Es. 12" />
-                </label>
-                <label>
-                  <span>Forma</span>
-                  <select id="tableShape">
-                    <option value="round">Rotondo</option>
-                    <option value="square">Quadrato</option>
-                  </select>
-                </label>
+            <div id="tableDetails" class="hidden">
+              <div class="field">
+                <label class="field-label">Tavolo #<span id="selectedTableNumber">-</span></label>
+                <div style="color: var(--color-text-muted); font-size: var(--text-sm);">Selezionato nella sala</div>
               </div>
-              <div class="inline-actions">
-                <button type="button" class="btn btn-secondary" id="saveTableBtn">Salva tavolo</button>
-                <button type="button" class="btn btn-ghost" id="clearReservationBtn">Libera tavolo</button>
+              
+              <div id="reservationInfo" class="hidden">
+                <div class="reservation-item">
+                  <div class="reservation-header">
+                    <div>
+                      <div class="reservation-name" id="guestName">-</div>
+                      <div class="reservation-time" id="reservationTime">-</div>
+                    </div>
+                  </div>
+                  <div class="reservation-notes" id="reservationNotes">-</div>
+                </div>
+                <div style="margin-top: var(--space-4);">
+                  <button class="btn btn-primary" id="editReservationBtn">✏️ Modifica Prenotazione</button>
+                  <button class="btn btn-secondary" id="clearReservationBtn" style="margin-left: var(--space-3);">🗑️ Libera Tavolo</button>
+                </div>
               </div>
-            </form>
 
-            <form id="reservationForm" class="field-grid hidden">
-              <div class="two-col">
-                <label>
-                  <span>Nome cliente</span>
-                  <input type="text" id="guestName" placeholder="Nome prenotazione" />
-                </label>
-                <label>
-                  <span>Orario</span>
-                  <input type="time" id="reservationTime" />
-                </label>
+              <div id="noReservationInfo">
+                <div class="empty-state" style="padding: var(--space-6);">
+                  <div style="font-size: 2rem; margin-bottom: var(--space-3);">✅</div>
+                  <p style="font-weight: 600;">Tavolo Libero</p>
+                  <p>Perfetto per nuove prenotazioni</p>
+                </div>
               </div>
-              <label>
-                <span>Note opzionali</span>
-                <textarea id="reservationNotes" placeholder="Allergie, seggiolone, compleanno, richieste speciali..."></textarea>
-              </label>
-              <div class="inline-actions">
-                <button type="submit" class="btn btn-primary">Salva prenotazione</button>
-              </div>
-            </form>
-
-            <section>
-              <h2 style="font-size:var(--text-sm); margin:0 0 var(--space-3);">Prenotazioni del giorno</h2>
-              <div id="reservationList" class="reservation-list"></div>
-            </section>
+            </div>
           </div>
         </section>
       </section>
@@ -677,269 +572,254 @@
   <script>
     const appState = {
       theme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+      editMode: false,
       selectedDate: '',
       selectedTableId: null,
       tables: [
-        { id: crypto.randomUUID(), number: 1, shape: 'round', x: 40, y: 40 },
-        { id: crypto.randomUUID(), number: 2, shape: 'square', x: 220, y: 60 },
-        { id: crypto.randomUUID(), number: 3, shape: 'round', x: 400, y: 220 },
-        { id: crypto.randomUUID(), number: 4, shape: 'square', x: 130, y: 250 },
-        { id: crypto.randomUUID(), number: 5, shape: 'round', x: 320, y: 420 },
+        { id: crypto.randomUUID(), number: 1, shape: 'round', x: 50, y: 50 },
+        { id: crypto.randomUUID(), number: 2, shape: 'square', x: 250, y: 80 },
+        { id: crypto.randomUUID(), number: 3, shape: 'round', x: 450, y: 250 },
+        { id: crypto.randomUUID(), number: 4, shape: 'square', x: 150, y: 350 },
+        { id: crypto.randomUUID(), number: 5, shape: 'round', x: 400, y: 450 },
       ],
       reservationsByDate: {}
     };
 
     const qs = (sel) => document.querySelector(sel);
     const boardInner = qs('#boardInner');
-    const selectedDateInput = qs('#selectedDate');
-    const reservationForm = qs('#reservationForm');
-    const tableForm = qs('#tableForm');
-    const emptySelection = qs('#emptySelection');
-    const selectedTableLabel = qs('#selectedTableLabel');
-    const reservationList = qs('#reservationList');
-    const sidebar = qs('#sidebar');
+    const board = qs('#board');
+    const editModeIndicator = qs('#editModeIndicator');
 
     function setTheme(nextTheme) {
       appState.theme = nextTheme;
       document.documentElement.setAttribute('data-theme', nextTheme);
-      const toggle = document.querySelector('[data-theme-toggle]');
+      const toggle = qs('[data-theme-toggle]');
       toggle.textContent = nextTheme === 'dark' ? '☀️' : '🌙';
-      toggle.setAttribute('aria-label', nextTheme === 'dark' ? 'Passa al tema chiaro' : 'Passa al tema scuro');
     }
 
     function todayString() {
       const now = new Date();
-      const off = now.getTimezoneOffset();
-      const local = new Date(now.getTime() - off * 60000);
-      return local.toISOString().slice(0, 10);
+      return now.toISOString().slice(0, 10);
     }
 
     function formatDate(dateStr) {
-      if (!dateStr) return '-';
-      return new Intl.DateTimeFormat('it-IT', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(dateStr + 'T12:00:00'));
+      return new Intl.DateTimeFormat('it-IT', { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric' 
+      }).format(new Date(dateStr));
     }
 
     function getReservationsForDate(dateStr) {
-      if (!appState.reservationsByDate[dateStr]) appState.reservationsByDate[dateStr] = {};
+      if (!appState.reservationsByDate[dateStr]) {
+        appState.reservationsByDate[dateStr] = {};
+      }
       return appState.reservationsByDate[dateStr];
     }
 
     function getSelectedTable() {
-      return appState.tables.find(t => t.id === appState.selectedTableId) || null;
+      return appState.tables.find(t => t.id === appState.selectedTableId);
     }
 
-    function clamp(val, min, max) { return Math.min(Math.max(val, min), max); }
-
-    function selectTable(id) {
-      appState.selectedTableId = id;
+    function toggleEditMode() {
+      appState.editMode = !appState.editMode;
+      document.body.classList.toggle('edit-mode', appState.editMode);
+      
+      qs('#normalActions').classList.toggle('hidden');
+      qs('#editActions').classList.toggle('hidden');
+      editModeIndicator.classList.toggle('hidden');
+      
+      qs('#sidebarActionsTitle').textContent = appState.editMode ? 'Modifica Sala' : 'Controlli';
+      qs('#boardSubtitle').textContent = appState.editMode 
+        ? 'Trascina i tavoli per riposizionarli' 
+        : 'Clicca sui tavoli per vedere i dettagli';
+      
       render();
     }
 
-    function addTable(base) {
-      const nextNumber = Math.max(0, ...appState.tables.map(t => Number(t.number) || 0)) + 1;
+    function addTable() {
+      const nextNumber = Math.max(...appState.tables.map(t => t.number || 0)) + 1;
       const table = {
         id: crypto.randomUUID(),
         number: nextNumber,
         shape: 'round',
-        x: base?.x ?? 80 + (appState.tables.length % 4) * 140,
-        y: base?.y ?? 80 + (appState.tables.length % 3) * 140,
+        x: 100 + (appState.tables.length % 3) * 200,
+        y: 100 + Math.floor(appState.tables.length / 3) * 200,
       };
       appState.tables.push(table);
-      selectTable(table.id);
+      render();
     }
 
     function removeSelectedTable() {
-      const selected = getSelectedTable();
-      if (!selected) return;
-      appState.tables = appState.tables.filter(t => t.id !== selected.id);
-      Object.values(appState.reservationsByDate).forEach(day => delete day[selected.id]);
-      appState.selectedTableId = appState.tables[0]?.id ?? null;
+      if (!appState.selectedTableId) return;
+      appState.tables = appState.tables.filter(t => t.id !== appState.selectedTableId);
+      Object.values(appState.reservationsByDate).forEach(day => delete day[appState.selectedTableId]);
+      appState.selectedTableId = null;
       render();
     }
 
     function duplicateSelectedTable() {
       const selected = getSelectedTable();
       if (!selected) return;
-      addTable({ x: selected.x + 30, y: selected.y + 30 });
-      const newTable = getSelectedTable();
-      newTable.shape = selected.shape;
-      render();
-    }
-
-    function saveTableDetails() {
-      const selected = getSelectedTable();
-      if (!selected) return;
-      const nextNumber = Number(qs('#tableNumber').value || selected.number);
-      selected.number = nextNumber > 0 ? nextNumber : selected.number;
-      selected.shape = qs('#tableShape').value;
+      const duplicate = {
+        ...selected,
+        id: crypto.randomUUID(),
+        number: selected.number + 10,
+        x: selected.x + 50,
+        y: selected.y + 50,
+      };
+      appState.tables.push(duplicate);
       render();
     }
 
     function clearReservation() {
       const selected = getSelectedTable();
-      if (!selected) return;
+      if (!selected || !appState.selectedDate) return;
       const day = getReservationsForDate(appState.selectedDate);
       delete day[selected.id];
       render();
     }
 
-    function saveReservation(evt) {
-      evt.preventDefault();
-      const selected = getSelectedTable();
-      if (!selected) return;
-      const name = qs('#guestName').value.trim();
-      const time = qs('#reservationTime').value;
-      const notes = qs('#reservationNotes').value.trim();
-      if (!name || !time) {
-        alert('Inserisci almeno nome cliente e orario.');
-        return;
+    function selectTable(id) {
+      if (!appState.editMode) {
+        appState.selectedTableId = id;
+        render();
       }
-      const day = getReservationsForDate(appState.selectedDate);
-      day[selected.id] = { name, time, notes };
-      render();
+    }
+
+    function clamp(val, min, max) {
+      return Math.max(min, Math.min(max, val));
     }
 
     function renderBoard() {
       const reservations = getReservationsForDate(appState.selectedDate);
       boardInner.innerHTML = '';
+      
       appState.tables.forEach(table => {
         const reservation = reservations[table.id];
-        const card = document.createElement('button');
-        card.type = 'button';
-        card.className = `table-card ${table.shape === 'round' ? 'round' : ''} ${table.id === appState.selectedTableId ? 'selected' : ''} ${reservation ? 'booked' : ''}`;
+        const card = document.createElement('div');
+        card.className = `table-card ${table.shape === 'round' ? 'round' : ''} 
+                         ${table.id === appState.selectedTableId ? 'selected' : ''} 
+                         ${reservation ? 'booked' : ''}`;
         card.style.left = table.x + 'px';
         card.style.top = table.y + 'px';
         card.dataset.id = table.id;
+        
         card.innerHTML = `
-          <div class="table-card-head">
-            <div>
-              <div class="table-meta">Tavolo</div>
-              <div class="table-number">${table.number}</div>
-            </div>
-            <span class="status-pill">${reservation ? 'Prenotato' : 'Libero'}</span>
-          </div>
-          <div class="guest-preview">
-            <strong>${reservation ? reservation.name : 'Disponibile'}</strong>
-            <span>${reservation ? reservation.time : 'Nessuna prenotazione'}</span>
-          </div>
+          <div class="table-number">${table.number}</div>
+          <div class="table-status">${reservation ? 'Prenotato' : 'Libero'}</div>
         `;
-        card.addEventListener('click', () => selectTable(table.id));
-        enableDrag(card, table);
+        
+        card.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!appState.editMode) selectTable(table.id);
+        });
+        
+        if (appState.editMode) {
+          enableDrag(card, table);
+        }
+        
         boardInner.appendChild(card);
       });
     }
 
-    function renderSelectionPanel() {
+    function renderDetailsPanel() {
       const selected = getSelectedTable();
+      
       if (!selected) {
-        emptySelection.classList.remove('hidden');
-        tableForm.classList.add('hidden');
-        reservationForm.classList.add('hidden');
-        selectedTableLabel.textContent = 'Seleziona un tavolo dalla sala.';
+        qs('#emptyState').classList.remove('hidden');
+        qs('#tableDetails').classList.add('hidden');
         return;
       }
-      emptySelection.classList.add('hidden');
-      tableForm.classList.remove('hidden');
-      reservationForm.classList.remove('hidden');
-      selectedTableLabel.textContent = `Tavolo ${selected.number} · ${formatDate(appState.selectedDate)}`;
-      qs('#tableNumber').value = selected.number;
-      qs('#tableShape').value = selected.shape;
-
-      const reservation = getReservationsForDate(appState.selectedDate)[selected.id];
-      qs('#guestName').value = reservation?.name ?? '';
-      qs('#reservationTime').value = reservation?.time ?? '';
-      qs('#reservationNotes').value = reservation?.notes ?? '';
-    }
-
-    function renderReservationsList() {
-      const dayReservations = getReservationsForDate(appState.selectedDate);
-      const items = appState.tables
-        .map(table => ({ table, reservation: dayReservations[table.id] }))
-        .filter(item => item.reservation)
-        .sort((a, b) => a.reservation.time.localeCompare(b.reservation.time));
-
-      reservationList.innerHTML = '';
-      if (!items.length) {
-        reservationList.innerHTML = '<div class="empty-box" style="padding:var(--space-5);">Nessuna prenotazione salvata per questa data.</div>';
-        return;
+      
+      qs('#emptyState').classList.add('hidden');
+      qs('#tableDetails').classList.remove('hidden');
+      qs('#selectedTableNumber').textContent = selected.number;
+      
+      const reservations = getReservationsForDate(appState.selectedDate);
+      const reservation = reservations[selected.id];
+      
+      if (reservation) {
+        qs('#reservationInfo').classList.remove('hidden');
+        qs('#noReservationInfo').classList.add('hidden');
+        qs('#guestName').textContent = reservation.name;
+        qs('#reservationTime').textContent = reservation.time;
+        qs('#reservationNotes').textContent = reservation.notes || 'Nessuna nota';
+      } else {
+        qs('#reservationInfo').classList.add('hidden');
+        qs('#noReservationInfo').classList.remove('hidden');
       }
-
-      items.forEach(({ table, reservation }) => {
-        const item = document.createElement('article');
-        item.className = 'reservation-item';
-        item.innerHTML = `
-          <strong>Tavolo ${table.number} · ${reservation.name}</strong>
-          <span>${formatDate(appState.selectedDate)} · ${reservation.time}</span>
-          <small>${reservation.notes ? reservation.notes : 'Nessuna nota'}</small>
-        `;
-        item.addEventListener('click', () => selectTable(table.id));
-        reservationList.appendChild(item);
-      });
     }
 
     function renderStats() {
       const reservations = getReservationsForDate(appState.selectedDate);
-      const booked = appState.tables.filter(t => reservations[t.id]).length;
+      const bookedCount = appState.tables.filter(t => reservations[t.id]).length;
+      
       qs('#statTables').textContent = appState.tables.length;
-      qs('#statBooked').textContent = booked;
-      qs('#statFree').textContent = appState.tables.length - booked;
+      qs('#statBooked').textContent = bookedCount;
+      qs('#statFree').textContent = appState.tables.length - bookedCount;
       qs('#statDate').textContent = formatDate(appState.selectedDate);
     }
 
     function render() {
       renderBoard();
-      renderSelectionPanel();
-      renderReservationsList();
+      renderDetailsPanel();
       renderStats();
-      if (window.innerWidth <= 1100) sidebar.classList.remove('open');
     }
 
     function enableDrag(element, table) {
-      let startX = 0, startY = 0, originalX = 0, originalY = 0;
-      const onPointerMove = (event) => {
-        table.x = clamp(originalX + (event.clientX - startX), 0, Math.max(0, boardInner.clientWidth - 140));
-        table.y = clamp(originalY + (event.clientY - startY), 0, Math.max(0, boardInner.clientHeight - 120));
-        element.style.left = table.x + 'px';
-        element.style.top = table.y + 'px';
-      };
-      const onPointerUp = () => {
-        element.classList.remove('dragging');
-        window.removeEventListener('pointermove', onPointerMove);
-        window.removeEventListener('pointerup', onPointerUp);
-      };
-      element.addEventListener('pointerdown', (event) => {
-        if (event.button !== 0) return;
-        startX = event.clientX;
-        startY = event.clientY;
+      let startX, startY, originalX, originalY;
+      
+      const onPointerDown = (e) => {
+        if (e.button !== 0) return;
+        e.stopPropagation();
+        startX = e.clientX;
+        startY = e.clientY;
         originalX = table.x;
         originalY = table.y;
-        selectTable(table.id);
         element.classList.add('dragging');
+        
+        const onPointerMove = (moveEvent) => {
+          table.x = clamp(originalX + (moveEvent.clientX - startX), 0, 9999);
+          table.y = clamp(originalY + (moveEvent.clientY - startY), 0, 9999);
+          element.style.left = table.x + 'px';
+          element.style.top = table.y + 'px';
+        };
+        
+        const onPointerUp = () => {
+          element.classList.remove('dragging');
+          window.removeEventListener('pointermove', onPointerMove);
+          window.removeEventListener('pointerup', onPointerUp);
+        };
+        
         window.addEventListener('pointermove', onPointerMove);
         window.addEventListener('pointerup', onPointerUp);
-      });
+      };
+      
+      element.addEventListener('pointerdown', onPointerDown);
     }
 
-    document.querySelector('[data-theme-toggle]').addEventListener('click', () => {
+    // Event Listeners
+    qs('[data-theme-toggle]').addEventListener('click', () => {
       setTheme(appState.theme === 'dark' ? 'light' : 'dark');
     });
 
-    selectedDateInput.addEventListener('change', (event) => {
-      appState.selectedDate = event.target.value;
+    qs('#selectedDate').addEventListener('change', (e) => {
+      appState.selectedDate = e.target.value;
       render();
     });
-    reservationForm.addEventListener('submit', saveReservation);
-    qs('#addTableBtn').addEventListener('click', () => addTable());
+
+    qs('#editModeBtn').addEventListener('click', toggleEditMode);
+    qs('#addTableBtn').addEventListener('click', addTable);
     qs('#duplicateBtn').addEventListener('click', duplicateSelectedTable);
     qs('#deleteBtn').addEventListener('click', removeSelectedTable);
-    qs('#saveTableBtn').addEventListener('click', saveTableDetails);
     qs('#clearReservationBtn').addEventListener('click', clearReservation);
-    qs('#menuToggle').addEventListener('click', () => sidebar.classList.toggle('open'));
+    qs('#menuToggle').addEventListener('click', () => qs('#sidebar').classList.toggle('open'));
 
+    // Init
     setTheme(appState.theme);
     appState.selectedDate = todayString();
-    selectedDateInput.value = appState.selectedDate;
-    appState.selectedTableId = appState.tables[0]?.id ?? null;
+    qs('#selectedDate').value = appState.selectedDate;
     render();
   </script>
 </body>
